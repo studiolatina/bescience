@@ -27,7 +27,7 @@
       --c-text-mid:   #3E5444;
       --c-text-light: #789280;
       --c-dark-bg:    #080d08;
-      --nav-h:        68px;
+      --nav-h:        80px;
       --max-w:        1160px;
       --pad-x:        clamp(20px, 4vw, 56px);
       --pad-section:  64px;
@@ -40,7 +40,7 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body { font-family: 'libertad', sans-serif; color: var(--c-text); background: var(--c-white); overflow-x: hidden; line-height: 1.65; }
+    body { font-family: 'libertad', sans-serif; color: var(--c-text); background: var(--c-white); overflow-x: clip; line-height: 1.65; }
     img { display: block; max-width: 100%; height: auto; }
     a { color: inherit; text-decoration: none; }
     ul, ol { list-style: none; }
@@ -52,22 +52,38 @@
 
     /* ── NAV ────────────────────────────── */
     .nav {
-      position: sticky; top: 0; z-index: 900;
-      height: var(--nav-h);
-      background: rgba(255,255,255,.82);
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(calc(100% - 32px), 1240px);
+      height: 60px;
+      z-index: 900;
+      border-radius: 100px;
+      background: rgba(255,255,255,.78);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border-bottom: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 4px 24px rgba(0,0,0,.05);
+      border: 1px solid rgba(255,255,255,.55);
+      box-shadow: 0 2px 20px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,.88);
+      transition: top .45s cubic-bezier(.16,1,.3,1), height .45s cubic-bezier(.16,1,.3,1), box-shadow .45s, background .45s, border-color .45s;
     }
-    .nav__inner { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad-x); height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .nav.is-scrolled {
+      top: 8px;
+      height: 52px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 8px 40px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.95);
+      border-color: rgba(255,255,255,.72);
+    }
+    .nav__inner { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(16px, 3vw, 36px); height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
     .nav__logo { display: flex; align-items: center; }
-    .nav__logo-img { height: 38px; width: auto; display: block; }
-    .nav__links { display: flex; align-items: center; gap: 24px; }
-    .nav__link { font-family: 'mundial-narrow-variable', sans-serif; font-size: .875rem; font-weight: 600; color: rgba(14,26,15,.6); letter-spacing: .04em; transition: color .2s; }
+    .nav__logo-img { height: 36px; width: auto; display: block; transition: height .45s cubic-bezier(.16,1,.3,1); }
+    .nav.is-scrolled .nav__logo-img { height: 30px; }
+    section[id] { scroll-margin-top: var(--nav-h); }
+    .nav__links { display: flex; align-items: center; gap: 44px; flex-shrink: 0; }
+    .nav__link { font-family: 'mundial-narrow-variable', sans-serif; font-size: .875rem; font-weight: 600; color: rgba(14,26,15,.6); letter-spacing: .04em; transition: color .2s; padding: 6px 0; white-space: nowrap; }
     .nav__link:hover { color: var(--c-green); }
-    .nav__right { display: flex; align-items: center; gap: 16px; }
-    .nav__cta { font-family: 'mundial-narrow-variable', sans-serif; padding: 9px 20px; background: var(--c-green); color: var(--c-white); font-size: .875rem; font-weight: 700; border-radius: var(--radius-sm); letter-spacing: .06em; transition: background .2s; }
+    .nav__right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+    .nav__cta { display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-family: 'mundial-narrow-variable', sans-serif; padding: 8px 18px 10px; background: var(--c-green); color: var(--c-white); font-size: .875rem; font-weight: 700; border-radius: var(--radius-sm); letter-spacing: .06em; transition: background .2s; white-space: nowrap; }
     .nav__cta:hover { background: var(--c-red-hover); }
 
     /* Language toggle */
@@ -82,20 +98,20 @@
     .nav__hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .nav__hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .nav__hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .nav__mobile { display: none; position: fixed; inset: 0; background: var(--c-navy); z-index: 850; padding: 100px 40px 48px; flex-direction: column; gap: 4px; overflow-y: auto; }
+    .nav__mobile { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.97); backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%); z-index: 950; padding: 100px 40px 48px; flex-direction: column; gap: 4px; overflow-y: auto; }
     .nav__mobile.is-open { display: flex; }
-    .nav__mobile-link { font-family: 'mundial-narrow-variable', sans-serif; font-size: clamp(1.75rem,5vw,2.25rem); font-weight: 700; color: var(--c-white); padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.1); transition: color .2s; }
+    .nav__mobile-link { font-family: 'mundial-narrow-variable', sans-serif; font-size: clamp(1.75rem,5vw,2.25rem); font-weight: 700; color: var(--c-text); padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,.08); transition: color .2s; }
     .nav__mobile-link:hover { color: var(--c-green); }
     .nav__mobile-link--cta { color: var(--c-green); margin-top: 16px; border: none; }
-    .nav__mobile-close { position: absolute; top: 20px; right: 24px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: var(--c-white); font-size: 28px; line-height: 1; }
-    .nav__mobile-lang { display: flex; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1); }
-    .lang-btn-mobile { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.4); padding: 8px 20px; border-radius: 24px; border: 2px solid rgba(255,255,255,.15); transition: all .2s; }
+    .nav__mobile-close { position: absolute; top: 20px; right: 24px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: var(--c-text); font-size: 28px; line-height: 1; z-index: 1; }
+    .nav__mobile-lang { display: flex; gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,.08); }
+    .lang-btn-mobile { font-size: 1rem; font-weight: 700; color: var(--c-text-mid); padding: 8px 20px; border-radius: 24px; border: 2px solid rgba(0,0,0,.12); transition: all .2s; }
     .lang-btn-mobile.active { color: var(--c-white); background: var(--c-green); border-color: var(--c-green); }
 
     /* ── HERO ───────────────────────────── */
     .hero { position: relative; min-height: 100svh; display: flex; align-items: center; background: #0a1a0b; overflow: hidden; }
-    .hero__bg { position: absolute; inset: 0; background-image: url("BESV-Background-1.svg"); background-size: cover; background-position: center; opacity: 1; }
-    .hero__overlay { display: none; }
+    .hero__bg { position: absolute; inset: 0; background-image: url("hero-bg.png"); background-size: cover; background-position: center; opacity: 1; }
+    .hero__overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(108deg, rgba(4,18,48,.75) 0%, rgba(4,18,48,.48) 36%, rgba(4,18,48,.20) 56%, transparent 72%), linear-gradient(to bottom, rgba(4,18,48,.72) 0%, rgba(4,18,48,.30) 18%, transparent 38%), linear-gradient(to top, rgba(4,18,48,.38) 0%, transparent 28%); }
     .hero__accent { display: none; }
     .hero__roman { position: absolute; right: var(--pad-x); top: 50%; transform: translateY(-50%); font-family: 'mundial-narrow-variable', sans-serif; font-weight: 900; font-size: clamp(10rem,22vw,18rem); color: rgba(255,255,255,.04); line-height: 1; letter-spacing: -.06em; pointer-events: none; user-select: none; }
     .hero__content { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: calc(var(--nav-h) + 80px) var(--pad-x) 100px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -104,26 +120,26 @@
     .hero__logo { width: 100%; max-width: 480px; opacity: .92; filter: drop-shadow(0 0 80px rgba(0,167,52,.25)); animation: fadeUp .9s ease both .1s; }
     .hero__eyebrow { display: inline-flex; align-items: center; gap: 14px; margin-bottom: 28px; animation: fadeUp .9s ease both .15s; }
     .hero__eyebrow-rule { width: 32px; height: 2px; background: rgba(255,255,255,.65); flex-shrink: 0; }
-    .hero__eyebrow-text { font-family: 'mundial-narrow-variable', sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.65); }
+    .hero__eyebrow-text { font-family: 'mundial-narrow-variable', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.65); }
     .hero-badge-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; animation: fadeUp .9s ease both; }
     .hero-badge-pill { font-family: 'mundial-narrow-variable', sans-serif; background: rgba(255,255,255,.2); border-radius: 100px; padding: 6px 14px; font-size: .75rem; font-weight: 600; letter-spacing: .04em; color: #fff; white-space: nowrap; }
     .hero-badge-location { font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 600; color: rgba(255,255,255,.7); letter-spacing: .04em; }
     .hero__title { font-size: clamp(2rem,4.8vw,3.5rem); font-weight: 300; color: var(--c-white); line-height: 1.05; letter-spacing: -.01em; margin-bottom: 20px; animation: fadeUp .9s ease both .25s; }
     .hero__title .t-medium { font-weight: 500; font-style: normal; }
-    .hero__tagline { font-family: 'libertad', sans-serif; font-size: clamp(1rem,1.8vw,1.15rem); color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 28px; animation: fadeUp .9s ease both .35s; }
+    .hero__tagline { font-family: 'libertad', sans-serif; font-size: clamp(1.125rem,2vw,1.375rem); color: rgba(255,255,255,.7); line-height: 1.65; margin-bottom: 28px; animation: fadeUp .9s ease both .35s; }
     .hero__meta { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 28px; animation: fadeUp .9s ease both .45s; }
     .hero__meta-item { display: flex; align-items: center; gap: 10px; }
     .hero__meta-icon { width: 34px; height: 34px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .hero__meta-icon .material-symbols-rounded { font-size: 16px; color: rgba(255,255,255,.8); font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
-    .hero__meta-text { color: rgba(255,255,255,.82); font-size: .8125rem; line-height: 1.35; }
-    .hero__meta-label { display: block; font-family: 'mundial-narrow-variable', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 2px; }
+    .hero__meta-text { color: rgba(255,255,255,.82); font-size: 1rem; line-height: 1.3; }
+    .hero__meta-label { display: block; font-family: 'mundial-narrow-variable', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 2px; }
     .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; animation: fadeUp .9s ease both .55s; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
 
     /* ── BUTTONS ────────────────────────── */
-    .btn { display: inline-flex; align-items: center; gap: 9px; padding: 14px 30px; border-radius: var(--radius-sm); font-family: 'mundial-narrow-variable', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .06em; transition: all .22s; line-height: 1; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 13px 30px 15px; border-radius: var(--radius-sm); font-family: 'mundial-narrow-variable', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .06em; transition: all .22s; line-height: 1; }
     /* Force text rendering for → ↗ — prevents iOS emoji substitution */
-    .btn, .nav__cta, .nav__mobile-link, .hotel__link, .venue__map-btn, .btn--ghost, #pw-submit { font-variant-emoji: text; }
+    .btn, .nav__cta, .nav__mobile-link, .hotel__link, .venue__map-btn, .btn--ghost { font-variant-emoji: text; }
     .btn--primary { background: var(--c-green); color: var(--c-white); transition: background .2s; }
     .btn--primary:hover { background: var(--c-red-hover); }
     .hero__actions .btn--primary { background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.52); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -150,102 +166,144 @@
     .section--dark .section__lead { color: rgba(255,255,255,.65); }
 
     /* ── ABOUT ──────────────────────────── */
-    .about__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
-    .about__stats-col { display: flex; flex-direction: column; gap: 20px; position: sticky; top: calc(var(--nav-h) + 24px); }
-    .about__text { font-size: 1rem; color: var(--c-text-mid); line-height: 1.82; margin-bottom: 20px; }
+    .about__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+    .about__media-col { display: flex; flex-direction: column; gap: 16px; position: sticky; top: calc(var(--nav-h) + 24px); }
+    .about__content-col { padding-top: 4px; }
+    .about__text { font-size: 1.0625rem; color: var(--c-text-mid); line-height: 1.82; margin-bottom: 20px; }
     .about__text strong { color: var(--c-text); font-weight: 600; }
     .about__text em { font-family: 'libertad', sans-serif; font-style: italic; font-size: 1.08em; }
-    .about__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .about__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .about__stat { background: var(--c-light); border-radius: var(--radius-md); padding: 20px 18px; border-left: 3px solid var(--c-green); }
     .about__stat-num { font-family: 'mundial-narrow-variable', sans-serif; font-size: 2rem; font-weight: 700; color: var(--c-green); line-height: 1; }
     .about__stat-label { font-family: 'mundial-narrow-variable', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--c-text-light); margin-top: 6px; }
-    .about__lang { display: inline-flex; align-items: center; gap: 10px; background: var(--c-gold-pale); border: 1px solid var(--c-gold-light); color: var(--c-text); padding: 10px 18px; border-radius: 24px; font-size: .875rem; font-weight: 600; }
+    .about__stats { margin-bottom: 28px; }
+    .about__lang { display: inline-flex; align-items: center; gap: 10px; background: var(--c-gold-pale); border: 1px solid var(--c-gold-light); color: var(--c-text); padding: 10px 18px; border-radius: 24px; font-size: .875rem; font-weight: 600; margin-top: 8px; }
+    .about__photo { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: var(--radius-lg); margin-top: 28px; display: block; }
+
+    /* ── CAROUSEL ───────────────────────── */
+    .about__carousel { position: relative; border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/5; background: var(--c-light); }
+    .carousel__track { display: flex; height: 100%; transition: transform .55s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .carousel__slide { flex: 0 0 100%; height: 100%; min-width: 0; overflow: hidden; position: relative; }
+    .carousel__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .carousel__caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 20px 14px; background: linear-gradient(transparent, rgba(5,12,5,.42)); font-family: 'mundial-narrow-variable', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.78); line-height: 1; }
+    .carousel__btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.13); backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%); border: 1px solid rgba(255,255,255,.22); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s; z-index: 2; }
+    .carousel__btn--prev { left: 14px; }
+    .carousel__btn--next { right: 14px; }
+    .carousel__btn:hover { background: rgba(255,255,255,.27); transform: translateY(-50%) scale(1.07); }
+    .carousel__btn .material-symbols-rounded { font-size: 20px; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20; }
+    .carousel__dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 2; }
+    .carousel__dot { width: 5px; height: 5px; padding: 0; border-radius: 50%; background: rgba(255,255,255,.35); border: none; cursor: pointer; transition: background .25s, width .3s; }
+    .carousel__dot.active { background: #fff; width: 18px; border-radius: 3px; }
 
     /* ── PILLARS ────────────────────────── */
-    #pillars { background: #0099CE; }
+    #pillars { background: #0099CE; position: relative; overflow: hidden; padding-bottom: 88px; }
+    #pillars .section__head { margin-bottom: 16px; }
     #pillars .label { color: rgba(255,255,255,.9); }
     #pillars .section__title::after { background: rgba(255,255,255,.65); }
     #pillars .section__lead { color: rgba(255,255,255,.85); }
+    #pillars .section__inner { position: relative; z-index: 1; }
+    .pillars__bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .pillars__blob { position: absolute; border-radius: 50%; will-change: transform; }
+    .pillars__blob--1 { width: clamp(320px,46vw,560px); height: clamp(320px,46vw,560px); background: radial-gradient(circle, rgba(255,255,255,.13) 0%, transparent 68%); top: -22%; right: -6%; }
+    .pillars__blob--2 { width: clamp(220px,32vw,400px); height: clamp(220px,32vw,400px); background: radial-gradient(circle, rgba(0,60,100,.55) 0%, transparent 68%); bottom: -18%; left: -4%; }
+    .pillars__blob--3 { width: clamp(130px,18vw,230px); height: clamp(130px,18vw,230px); background: radial-gradient(circle, rgba(255,255,255,.09) 0%, transparent 68%); top: 38%; left: 30%; }
     .pillars__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
-    .pillar { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.32); border-radius: var(--radius-lg); padding: 40px 26px 36px; position: relative; overflow: hidden; transition: transform .3s,border-color .3s,background .3s; }
-    .pillar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #FFFFFF; transform: scaleX(0); transform-origin: left; transition: transform .4s ease; border-radius: 2px 2px 0 0; }
-    .pillar:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.1); }
+    .pillar { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.32); border-radius: var(--radius-lg); padding: 40px 26px 36px; position: relative; overflow: hidden; transition: transform .38s cubic-bezier(.4,0,.2,1), border-color .3s, background .3s, box-shadow .38s cubic-bezier(.4,0,.2,1); }
+    .pillar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #FFFFFF; transform: scaleX(0); transform-origin: left; transition: transform .45s cubic-bezier(.4,0,.2,1); border-radius: 2px 2px 0 0; }
+    .pillar:hover { transform: translateY(-7px); border-color: rgba(255,255,255,.6); background: rgba(255,255,255,.11); box-shadow: 0 22px 52px rgba(0,0,0,.22), 0 4px 14px rgba(0,0,0,.1); }
     .pillar:hover::before { transform: scaleX(1); }
-    .pillar__icon { width: 56px; height: 56px; background: #FFFFFF; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; transition: background .3s, box-shadow .3s; }
-    .pillar:hover .pillar__icon { background: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
-    .pillar__icon .material-symbols-rounded { font-size: 28px; color: var(--c-green); font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; transition: color .3s; }
+    .pillar__icon { width: 56px; height: 56px; background: #FFFFFF; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; transition: box-shadow .38s cubic-bezier(.4,0,.2,1), transform .38s cubic-bezier(.4,0,.2,1); }
+    .pillar:hover .pillar__icon { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.15); }
+    .pillar__icon .material-symbols-rounded { font-size: 28px; color: var(--c-green); font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; transition: color .3s, transform .38s cubic-bezier(.4,0,.2,1); }
     .pillar:hover .pillar__icon .material-symbols-rounded { color: var(--c-blue); }
     .pillar__title { font-family: 'mundial-narrow-variable', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--c-white); margin-bottom: 12px; }
-    .pillar__desc { font-size: .875rem; color: rgba(255,255,255,.82); line-height: 1.72; font-weight: 400; }
+    .pillar__desc { font-size: 1rem; color: rgba(255,255,255,.82); line-height: 1.72; font-weight: 400; }
 
     /* ── PROGRAMME ──────────────────────── */
     .programme__tabs { display: flex; border-bottom: 2px solid var(--c-border); margin-bottom: 52px; }
-    .programme__tab-btn { font-family: 'mundial-narrow-variable', sans-serif; padding: 14px 36px; font-size: 1rem; font-weight: 700; letter-spacing: .04em; color: var(--c-text-light); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color .2s,border-color .2s; white-space: nowrap; }
+    .programme__tab-btn { display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-family: 'mundial-narrow-variable', sans-serif; padding: 13px 36px 15px; font-size: 1rem; font-weight: 700; letter-spacing: .04em; color: var(--c-text-light); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color .2s,border-color .2s; white-space: nowrap; }
     .programme__tab-btn:hover { color: var(--c-green); }
     .programme__tab-btn.active { color: var(--c-green); border-bottom-color: var(--c-green); }
     .programme__panel { display: none; }
     .programme__panel.active { display: block; }
     .programme__day-hd { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--c-border); }
-    .day-box { background: var(--c-green); color: var(--c-white); padding: 12px 20px; border-radius: var(--radius-md); text-align: center; flex-shrink: 0; }
-    .day-box__num { font-family: 'mundial-narrow-variable', sans-serif; font-size: 2.25rem; font-weight: 700; line-height: 1; }
-    .day-box__month { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-gold); margin-top: 4px; }
+    .day-box { background: var(--c-green); color: var(--c-white); width: 76px; padding: 14px 0; border-radius: var(--radius-md); flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .day-box__num { font-family: 'mundial-narrow-variable', sans-serif; font-size: 2.25rem; font-weight: 700; line-height: 1; text-align: center; width: 100%; }
+    .day-box__month { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-top: 4px; text-align: center; width: 100%; }
     .programme__day-title { font-family: 'mundial-narrow-variable', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--c-text); }
     .programme__day-sub { font-size: .875rem; color: var(--c-text-light); margin-top: 4px; }
     .sched-item { display: grid; grid-template-columns: 76px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--c-light); align-items: start; }
     .sched-item:last-child { border-bottom: none; }
     .sched-item--block { background: var(--c-light); margin: 6px -18px; padding: 18px 18px; border-radius: var(--radius-md); border: none; }
+    .sched-item--event .sched-title { color: var(--c-text); }
     .sched-item--social { border-left: 3px solid var(--c-gold); padding-left: 17px; }
     .sched-time { font-family: 'mundial-narrow-variable', sans-serif; font-size: .875rem; font-weight: 700; letter-spacing: .04em; color: var(--c-green); padding-top: 2px; white-space: nowrap; }
     .sched-title { font-size: 1rem; font-weight: 600; color: var(--c-text); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; line-height: 1.4; }
     .sched-desc { font-size: .875rem; color: var(--c-text-light); margin-top: 4px; }
     .tag { display: inline-block; font-family: 'mundial-narrow-variable', sans-serif; padding: 2px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
     .tag--session { background: rgba(0,153,206,.12); color: var(--c-blue); }
-    .tag--keynote { background: rgba(0,167,52,.12); color: var(--c-green); }
-    .tag--break   { background: rgba(0,153,206,.12); color: #006e9a; }
-    .tag--social  { background: rgba(0,167,52,.12); color: #007a2b; }
-    .tag--open    { background: rgba(0,167,52,.1);  color: var(--c-green); }
+    .tag--keynote { background: rgba(0,153,206,.12); color: var(--c-blue); }
+    .tag--break   { background: rgba(0,167,52,.12); color: var(--c-green); }
+    .tag--event   { background: rgba(0,167,52,.12); color: var(--c-green); }
+    .tag--open    { background: rgba(0,167,52,.12); color: var(--c-green); }
 
     /* ── VENUE ──────────────────────────── */
-    .venue__layout { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: start; }
-    .venue__address-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--c-light); border-radius: 100px; padding: 9px 16px 9px 12px; margin-bottom: 24px; font-family: 'mundial-narrow-variable', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c-text-mid); }
+    .venue__layout { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: stretch; }
+    .venue__info { display: flex; flex-direction: column; gap: 16px; }
+    .venue__schedule { display: flex; flex-direction: column; gap: 16px; }
+    .venue__carousel { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: var(--c-light); flex: 1; min-height: 0; }
+    .venue__carousel .carousel__track { display: flex; height: 100%; transition: transform .45s cubic-bezier(.4,0,.2,1); }
+    .venue__address-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--c-light); border-radius: 100px; padding: 9px 16px 9px 12px; font-family: 'mundial-narrow-variable', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--c-text-mid); }
     .venue__address-chip .material-symbols-rounded { font-size: 16px; color: var(--c-green); font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; line-height: 1; }
-    .venue__text { font-size: 1rem; color: var(--c-text-mid); line-height: 1.8; margin-bottom: 28px; }
-    .venue__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 32px; }
+    .venue__text { font-size: 1rem; color: var(--c-text-mid); line-height: 1.8; }
+    .venue__rooms { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .venue__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .venue__fact { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--c-light); border-radius: var(--radius-md); font-size: .875rem; color: var(--c-text-mid); line-height: 1.3; }
     .venue__fact-icon { font-size: 20px; color: var(--c-green); font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; line-height: 1; flex-shrink: 0; }
-    .venue__schedule { display: flex; flex-direction: column; gap: 14px; }
-    .venue__room { background: var(--c-white); border-radius: var(--radius-md); padding: 20px 22px; border-left: 4px solid var(--room-c,var(--c-navy)); box-shadow: var(--shadow-sm); }
-    .venue__room-day { font-family: 'mundial-narrow-variable', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-text-light); margin-bottom: 4px; }
+    .venue__room { background: var(--c-white); border-radius: var(--radius-md); padding: 28px 24px; border-left: 4px solid var(--room-c,var(--c-navy)); box-shadow: var(--shadow-sm); }
+    .venue__room-day { font-family: 'mundial-narrow-variable', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-text-light); margin-bottom: 4px; }
     .venue__room-name { font-weight: 700; color: var(--c-text); margin-bottom: 4px; }
-    .venue__room-desc { font-size: .875rem; color: var(--c-text-light); }
-    .venue__gala { background: var(--c-navy); border-radius: var(--radius-lg); padding: 28px 32px; overflow: hidden; position: relative; }
+    .venue__room-desc { font-size: .9375rem; color: var(--c-text-light); }
+    .venue__gala { background: var(--c-navy); border-radius: var(--radius-lg); padding: 32px 36px; overflow: hidden; position: relative; }
     .venue__gala::before { content: '1641'; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); font-family: 'libertad', sans-serif; font-weight: 300; font-size: 7rem; color: rgba(255,255,255,.05); line-height: 1; pointer-events: none; }
-    .venue__gala-label { font-family: 'mundial-narrow-variable', sans-serif; color: var(--c-green); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+    .venue__gala-label { font-family: 'mundial-narrow-variable', sans-serif; color: var(--c-green); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
     .venue__gala-name { font-family: 'mundial-narrow-variable', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--c-white); margin-bottom: 8px; }
-    .venue__gala-desc { font-size: .875rem; color: rgba(255,255,255,.6); line-height: 1.7; }
+    .venue__gala-desc { font-size: .9375rem; color: rgba(255,255,255,.6); line-height: 1.7; }
+    .venue__gala-text { position: relative; z-index: 1; max-width: 62%; }
+    .venue__gala-photo { position: absolute; right: 0; top: 0; height: 100%; width: 55%; object-fit: cover; object-position: center; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.5) 28%, black 65%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.5) 28%, black 65%); opacity: .55; }
     .btn--ghost { background: transparent; color: var(--c-green); border: 1.5px solid var(--c-green); }
     .btn--ghost:hover { background: var(--c-green); color: var(--c-white); }
     /* shared inline icon utility */
     .icon-inline { font-size: 18px; vertical-align: middle; line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
     .venue__map-pin .material-symbols-rounded { font-size: 15px; color: var(--c-gold); font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .register__note .material-symbols-rounded { font-size: 15px; vertical-align: middle; margin-right: 4px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; color: rgba(255,255,255,.6); }
 
     /* ── ACCOMMODATION ──────────────────── */
+    #accommodation { position: relative; }
+    #accommodation::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 55% 60% at 90% 25%, rgba(0,153,206,.26) 0%, transparent 65%), radial-gradient(ellipse 50% 55% at 78% 80%, rgba(0,153,206,.18) 0%, transparent 65%), radial-gradient(ellipse 38% 42% at 15% 55%, rgba(0,153,206,.07) 0%, transparent 60%); pointer-events: none; z-index: 0; }
+    #accommodation .section__inner { position: relative; z-index: 1; }
     .hotels__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; align-items: stretch; }
-    .hotel { background: var(--c-white); border-radius: var(--radius-lg); border: 1px solid var(--c-border); box-shadow: var(--shadow-sm); transition: transform .3s,box-shadow .3s; display: flex; flex-direction: column; }
-    .hotel:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .hotel { background: rgba(255,255,255,.55); backdrop-filter: blur(18px) saturate(1.5); -webkit-backdrop-filter: blur(18px) saturate(1.5); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,.82); box-shadow: 0 4px 24px rgba(0,0,0,.07), inset 0 1px 0 rgba(255,255,255,.9); transition: transform .38s cubic-bezier(.16,1,.3,1), box-shadow .38s cubic-bezier(.16,1,.3,1), border-color .3s, background .3s; display: flex; flex-direction: column; overflow: hidden; }
+    .hotel:hover { transform: translateY(-8px); background: rgba(255,255,255,.75); box-shadow: 0 24px 56px rgba(0,0,0,.1), 0 4px 14px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.95); border-color: rgba(0,167,52,.45); }
+    .hotel__accent { height: 4px; background: linear-gradient(90deg, var(--c-green) 0%, var(--c-blue) 100%); flex-shrink: 0; }
     .hotel__body { padding: 28px 26px 24px; display: flex; flex-direction: column; flex: 1; }
     .hotel__header { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--c-border); }
-    .hotel__stars { font-family: 'mundial-narrow-variable', sans-serif; color: var(--c-gold); font-size: 13px; letter-spacing: 2px; margin-bottom: 8px; }
+    .hotel__stars { font-family: 'mundial-narrow-variable', sans-serif; color: var(--c-green); font-size: 13px; letter-spacing: 2px; margin-bottom: 8px; }
     .hotel__name { font-family: 'libertad', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--c-text); line-height: 1.2; letter-spacing: -.01em; }
     .hotel__location { font-family: 'mundial-narrow-variable', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--c-text-light); margin-top: 6px; }
+    .hotel__dist { display: inline-flex; align-items: center; gap: 4px; font-family: 'mundial-narrow-variable', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--c-green); background: var(--c-gold-pale); border: 1px solid var(--c-gold-light); border-radius: 100px; padding: 3px 9px 3px 7px; margin-top: 10px; }
+    .hotel__dist .material-symbols-rounded { font-size: 13px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; line-height: 1; }
     .hotel__prices { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .hotel__price-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: var(--c-light); border-radius: var(--radius-sm); }
-    .hotel__price-label { font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 600; letter-spacing: .03em; color: var(--c-text-mid); }
-    .hotel__price-value { font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 700; color: var(--c-green); }
-    .hotel__note { font-family: 'mundial-narrow-variable', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .04em; color: var(--c-text-light); margin-top: 10px; }
-    .hotel__link { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; padding: 10px 20px; background: transparent; border: 1.5px solid var(--c-green); border-radius: 100px; font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 700; letter-spacing: .06em; color: var(--c-green); transition: background .2s, color .2s; align-self: flex-start; }
+    .hotel__price-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: var(--c-light); border-radius: var(--radius-sm); transition: background .25s, transform .25s; }
+    .hotel:hover .hotel__price-row { background: rgba(0,167,52,.08); }
+    .hotel:hover .hotel__price-row:nth-child(2) { transition-delay: .04s; }
+    .hotel__price-label { font-family: 'mundial-narrow-variable', sans-serif; font-size: .875rem; font-weight: 600; letter-spacing: .03em; color: var(--c-text-mid); }
+    .hotel__price-value { font-family: 'mundial-narrow-variable', sans-serif; font-size: .9375rem; font-weight: 700; color: var(--c-green); }
+    .hotel__note { font-family: 'mundial-narrow-variable', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--c-text-light); margin-top: 10px; }
+    .hotel__link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1; margin-top: 20px; padding: 9px 20px 11px; background: transparent; border: 1.5px solid var(--c-green); border-radius: 100px; font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 700; letter-spacing: .06em; color: var(--c-green); transition: background .2s, color .2s; align-self: flex-start; }
     .hotel__link:hover { background: var(--c-green); color: var(--c-white); }
+    @keyframes hotelPriceIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+    .hotel.in-view .hotel__price-row:nth-child(1) { animation: hotelPriceIn .4s cubic-bezier(.16,1,.3,1) both .15s; }
+    .hotel.in-view .hotel__price-row:nth-child(2) { animation: hotelPriceIn .4s cubic-bezier(.16,1,.3,1) both .25s; }
 
     /* ── HOTEL PLACEHOLDER ─────────────── */
     .hotel__placeholder { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, var(--c-light) 0%, var(--c-border) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
@@ -253,9 +311,12 @@
     .hotel__placeholder-label { font-family: 'mundial-narrow-variable', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c-text-light); }
 
     /* ── SPONSORS ───────────────────────── */
-    .sponsors--minimal { padding-top: 48px; padding-bottom: 48px; }
-    .sponsors__banner { display: flex; justify-content: center; align-items: center; }
-    .sponsors__banner-img { max-width: 100%; width: 100%; height: auto; display: block; object-fit: contain; }
+    .sponsors--minimal { padding-top: 80px; padding-bottom: 80px; border-top: 1px solid var(--c-border); }
+    .sponsors__label { text-align: center; font-family: 'mundial-narrow-variable', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--c-text-mid); margin-bottom: 40px; }
+    .sponsors__grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 36px 40px; }
+    .sponsor__item { flex: 0 0 240px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .sponsor__item img { width: 100%; height: auto; max-height: 96px; object-fit: contain; display: block; opacity: .85; transition: opacity .2s; }
+    .sponsor__item:is(a):hover img { opacity: 1; }
 
     /* ── REGISTER ───────────────────────── */
     .register { background: linear-gradient(135deg, #0099CE 0%, #00A734 100%); position: relative; overflow: hidden; }
@@ -265,47 +326,129 @@
     .register__title { font-family: 'mundial-narrow-variable', sans-serif; font-size: clamp(2.2rem,5.5vw,3.8rem); font-weight: 700; color: var(--c-white); line-height: 1.12; margin-bottom: 14px; letter-spacing: -.02em; }
     .register__title em { font-style: italic; color: rgba(255,255,255,.85); }
     .register__sub { font-family: 'libertad', sans-serif; font-style: italic; font-size: clamp(1.1rem,2.5vw,1.5rem); color: rgba(255,255,255,.65); margin-bottom: 44px; }
-    .register__note { font-size: .875rem; color: rgba(255,255,255,.4); margin-top: 18px; }
-    .register__divider { width: 1px; height: 40px; background: linear-gradient(to bottom,transparent,rgba(255,255,255,.2),transparent); margin: 52px auto 40px; }
-    .register__kpis { display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+    .register__kpis { margin-top: 52px; }
+    .register__kpis { display: flex; justify-content: center; gap: 56px; flex-wrap: nowrap; }
     .register__kpi-num { font-family: 'mundial-narrow-variable', sans-serif; font-size: 2.25rem; font-weight: 700; color: var(--c-white); display: block; line-height: 1; }
-    .register__kpi-label { font-family: 'mundial-narrow-variable', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-top: 7px; line-height: 1.5; }
+    .register__kpi-label { font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-top: 7px; line-height: 1.5; }
 
     /* ── FOOTER ─────────────────────────── */
     .footer { background: #FFFFFF; color: var(--c-text-mid); padding: 48px var(--pad-x); border-top: 1px solid var(--c-border); }
     .footer__inner { max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 32px; }
     .footer__brand-name { font-family: 'libertad', sans-serif; font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; color: var(--c-text); margin-bottom: 4px; }
     .footer__brand-info { font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 600; letter-spacing: .06em; color: var(--c-green); }
-    .footer__links { display: flex; gap: 24px; }
+    .footer__links { display: flex; gap: 36px; }
     .footer__link { font-family: 'mundial-narrow-variable', sans-serif; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; color: var(--c-text-light); transition: color .2s; }
     .footer__link:hover { color: var(--c-green); }
     .footer__copy { text-align: right; font-family: 'mundial-narrow-variable', sans-serif; font-size: 12px; letter-spacing: .03em; color: var(--c-text-light); line-height: 1.6; }
     .footer__copy a { color: var(--c-green); opacity: 1; }
 
+    /* ── EXTRA ANIMATIONS ───────────────── */
+    /* Scroll progress bar */
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--c-green), var(--c-blue)); z-index: 1100; pointer-events: none; border-radius: 0 3px 3px 0; }
+    /* Schedule items slide-in on tab activation */
+    @keyframes schedIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+    .programme__panel.active .sched-item { animation: schedIn .4s cubic-bezier(.16,1,.3,1) both; }
+    .programme__panel.active .sched-item:nth-child(1)  { animation-delay: .04s; }
+    .programme__panel.active .sched-item:nth-child(2)  { animation-delay: .09s; }
+    .programme__panel.active .sched-item:nth-child(3)  { animation-delay: .14s; }
+    .programme__panel.active .sched-item:nth-child(4)  { animation-delay: .19s; }
+    .programme__panel.active .sched-item:nth-child(5)  { animation-delay: .24s; }
+    .programme__panel.active .sched-item:nth-child(6)  { animation-delay: .29s; }
+    .programme__panel.active .sched-item:nth-child(7)  { animation-delay: .34s; }
+    .programme__panel.active .sched-item:nth-child(8)  { animation-delay: .39s; }
+    .programme__panel.active .sched-item:nth-child(9)  { animation-delay: .44s; }
+    .programme__panel.active .sched-item:nth-child(10) { animation-delay: .49s; }
+    .programme__panel.active .sched-item:nth-child(11) { animation-delay: .54s; }
+
+    /* ── REDUCED MOTION ─────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .nav { transition: background .2s, box-shadow .2s !important; }
+      .nav__logo-img { transition: none !important; }
+      .scroll-progress { display: none; }
+      .programme__panel.active .sched-item { animation: none !important; }
+      .pillar, .pillar::before, .pillar__icon, .pillar__icon .material-symbols-rounded { transition: border-color .2s, background .2s, color .2s !important; }
+      .pillar:hover { transform: none; box-shadow: none; }
+      .pillar:hover .pillar__icon { transform: none; box-shadow: none; }
+      .pillar.reveal, .reveal { transition: opacity .3s ease !important; transform: none !important; }
+    }
+
     /* ── RESPONSIVE ─────────────────────── */
     @media (max-width: 1024px) { .pillars__grid { grid-template-columns: repeat(2,1fr); } .hotels__grid { grid-template-columns: repeat(2,1fr); } }
     @media (max-width: 768px) {
-      :root { --pad-section: 64px; }
+      :root { --nav-h: 56px; --pad-section: 56px; }
+      .nav { top: 10px; width: min(calc(100% - 24px), 1240px); border-radius: 100px; height: 56px; }
+      .nav.is-scrolled { top: 6px; height: 48px; }
       .nav__links, .nav__cta, .lang-toggle { display: none; }
       .nav__hamburger { display: flex; }
-      .hero__content { grid-template-columns: 1fr; gap: 40px; padding-top: calc(var(--nav-h) + 48px); }
+      .hero__content { grid-template-columns: 1fr; gap: 32px; padding-top: calc(var(--nav-h) + 48px); }
       .hero__right { order: -1; }
-      .hero__logo { max-width: 260px; }
+      .hero__logo { max-width: 220px; }
       .hero__roman, .hero__accent { display: none; }
-      .about__grid { grid-template-columns: 1fr; } .about__visual { order: -1; } .about__stats { grid-template-columns: 1fr 1fr; }
-      .about__stats-col { position: static; }
-      .pillars__grid { grid-template-columns: 1fr; gap: 14px; }
+      .hero__overlay { background: linear-gradient(to bottom, rgba(4,18,48,.30) 0%, transparent 22%), linear-gradient(to top, rgba(4,18,48,.60) 0%, rgba(4,18,48,.30) 30%, transparent 60%); }
+      .about__grid { grid-template-columns: 1fr; } .about__content-col { order: -1; } .about__media-col { position: static; } .about__carousel { aspect-ratio: 4/3; } .about__stats { grid-template-columns: repeat(3, 1fr); }
+      /* Carousel — touch targets */
+      .carousel__btn { width: 44px; height: 44px; }
+      .carousel__caption { bottom: 0; top: auto; padding: 14px 16px; background: linear-gradient(transparent, rgba(5,12,5,.55)); }
+      .carousel__dots { gap: 8px; }
+      .carousel__dot { width: 6px; height: 6px; }
+      .carousel__dot.active { width: 18px; }
+      .pillars__grid { grid-template-columns: 1fr; gap: 0; }
+      #pillars { overflow: visible; }
+      .pillars__bg { display: none; }
+      .pillar { position: sticky; background: #0082b4; margin-bottom: 12px; box-shadow: 0 -6px 20px rgba(0,0,0,.18), 0 4px 16px rgba(0,0,0,.12); }
+      .pillar:nth-child(1) { top: calc(var(--nav-h) + 12px); z-index: 1; }
+      .pillar:nth-child(2) { top: calc(var(--nav-h) + 24px); z-index: 2; }
+      .pillar:nth-child(3) { top: calc(var(--nav-h) + 36px); z-index: 3; }
+      .pillar:nth-child(4) { top: calc(var(--nav-h) + 48px); z-index: 4; }
+      /* Venue */
       .venue__layout { grid-template-columns: 1fr; }
+      .venue__rooms { grid-template-columns: 1fr; }
+      .venue__carousel { flex: none; aspect-ratio: 4/3; }
+      .venue__gala { min-height: 200px; }
       .hotels__grid { grid-template-columns: 1fr; }
-      .footer__inner { grid-template-columns: 1fr; text-align: center; } .footer__links { justify-content: center; } .footer__copy { text-align: center; }
-      .register__kpis { gap: 36px; }
-      .programme__tabs { overflow-x: auto; }
+      /* Footer */
+      .footer__inner { grid-template-columns: 1fr; text-align: center; gap: 24px; }
+      .footer__links { justify-content: center; flex-wrap: wrap; gap: 4px 20px; }
+      .footer__link { padding: 8px 4px; display: inline-block; }
+      .footer__copy { text-align: center; }
+      /* Register */
+      .register__kpis { gap: 28px 36px; flex-wrap: wrap; }
+      /* Sponsors */
+      .sponsor__item { flex: 0 0 140px; }
+      .sponsors__grid { gap: 24px 20px; }
+      /* Programme tabs — hide scrollbar */
+      .programme__tabs { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+      .programme__tabs::-webkit-scrollbar { display: none; }
+      /* Programme day header */
+      .programme__day-sub { font-size: .75rem; }
     }
     @media (max-width: 540px) {
-      .about__stats { grid-template-columns: 1fr; } .hero__meta { flex-direction: column; gap: 14px; }
-      .hero__actions { flex-direction: column; align-items: flex-start; } .btn { width: 100%; justify-content: center; }
-      .programme__tab-btn { padding: 12px 20px; font-size: .875rem; }
-      .sched-item { grid-template-columns: 60px 1fr; gap: 12px; }
+      :root { --pad-section: 40px; }
+      .about__stats { grid-template-columns: repeat(3, 1fr); }
+      .hero__content { padding-top: calc(var(--nav-h) + 20px); gap: 24px; }
+      .hero__logo { max-width: 180px; }
+      .hero__meta { flex-direction: column; gap: 12px; }
+      .hero__actions { flex-direction: column; align-items: stretch; } .btn { width: 100%; justify-content: center; }
+      .programme__tab-btn { padding: 9px 16px 11px; font-size: .8125rem; }
+      .sched-item { grid-template-columns: 54px 1fr; gap: 10px; }
+      .sched-title { font-size: .9375rem; }
+      .sched-desc { font-size: .8125rem; }
+      .programme__day-hd { gap: 14px; margin-bottom: 28px; }
+      .programme__day-title { font-size: 1.25rem; }
+      .day-box { width: 54px; padding: 10px 0; }
+      .day-box__num { font-size: 1.875rem; }
+      /* Venue gala — more text room on small screens */
+      .venue__gala-text { max-width: 58%; }
+      .venue__gala-photo { width: 48%; }
+      /* Hotel cards */
+      .hotel__body { padding: 20px 18px 18px; }
+      /* Register KPIs — 2×2 grid */
+      .register__kpis { gap: 20px 24px; }
+      .register__kpis > div { flex: 0 0 calc(50% - 12px); text-align: center; }
+      .register__kpi-num { font-size: 1.875rem; }
+      /* Sponsors — 2 per row on small phones */
+      .sponsor__item { flex: 0 0 calc(50% - 12px); max-width: 160px; }
+      .sponsors__grid { gap: 20px 16px; }
     }
 
     /* ── VENUE MAP ──────────────────────────── */
@@ -326,7 +469,7 @@
     .venue__map-sub { font-size: .875rem; color: rgba(255,255,255,.6); }
     .venue__map-actions { display: flex; gap: 10px; flex-wrap: wrap; }
     .venue__map-btn {
-      display: inline-flex; align-items: center;
+      display: inline-flex; align-items: center; justify-content: center; line-height: 1;
       padding: 8px 18px;
       background: rgba(255,255,255,.1);
       border: 1px solid rgba(255,255,255,.2);
@@ -350,122 +493,23 @@
       border: 1px solid rgba(0,167,52,.35);
     }
     @media (max-width: 768px) {
-      .venue__map-header { flex-direction: column; align-items: flex-start; }
+      .venue__map-header { flex-direction: column; align-items: flex-start; gap: 12px; }
       .venue__map-frame iframe { height: 300px; }
       .venue__map-pin { font-size: .75rem; padding: 6px 14px; }
     }
+    @media (max-width: 540px) {
+      .venue__map-frame iframe { height: 240px; }
+      .venue__map-btn { font-size: .75rem; padding: 8px 14px; white-space: normal; text-align: center; }
+    }
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease,transform .55s ease; }
     .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .pillar.reveal { transform: translateY(28px); transition: opacity .65s ease, transform .65s cubic-bezier(.16,1,.3,1); }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════
-       PASSWORD GATE — removed from DOM on auth
-  ═══════════════════════════════════════════════ -->
-  <style>
-    #pw-gate {
-      position: fixed; inset: 0; z-index: 99999;
-      background: #080d08;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity .45s ease;
-    }
-    #pw-gate__inner {
-      width: 100%; max-width: 420px;
-      padding: 48px 40px;
-      text-align: center;
-    }
-    #pw-gate__eyebrow {
-      font-family: 'mundial-narrow-variable', sans-serif;
-      font-size: 10px; font-weight: 700; letter-spacing: .22em;
-      text-transform: uppercase; color: rgba(255,255,255,.4);
-      margin-bottom: 20px;
-    }
-    #pw-gate__wordmark {
-      font-family: 'libertad', sans-serif;
-      font-size: clamp(2.4rem, 6vw, 3.2rem);
-      font-weight: 300; color: #fff;
-      line-height: 1; letter-spacing: -.02em;
-      margin-bottom: 6px;
-    }
-    #pw-gate__wordmark span { font-weight: 500; }
-    #pw-gate__sub {
-      font-family: 'mundial-narrow-variable', sans-serif;
-      font-size: 11px; font-weight: 600; letter-spacing: .1em;
-      text-transform: uppercase; color: rgba(255,255,255,.35);
-      margin-bottom: 40px;
-    }
-    #pw-gate__divider {
-      width: 32px; height: 1px;
-      background: rgba(255,255,255,.15);
-      margin: 0 auto 40px;
-    }
-    #pw-form { display: flex; flex-direction: column; gap: 12px; }
-    #pw-input {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 100px;
-      padding: 14px 22px;
-      font-family: 'mundial-narrow-variable', sans-serif;
-      font-size: .95rem; font-weight: 500;
-      color: #fff; letter-spacing: .04em;
-      outline: none; text-align: center;
-      transition: border-color .2s, background .2s;
-    }
-    #pw-input::placeholder { color: rgba(255,255,255,.28); }
-    #pw-input:focus {
-      border-color: rgba(255,255,255,.35);
-      background: rgba(255,255,255,.09);
-    }
-    #pw-input.pw-shake {
-      animation: pw-shake .35s ease;
-      border-color: rgba(255,80,80,.5);
-    }
-    #pw-submit {
-      background: #00A734; color: #fff;
-      border: none; border-radius: 100px;
-      padding: 14px 30px;
-      font-family: 'mundial-narrow-variable', sans-serif;
-      font-size: 1rem; font-weight: 700; letter-spacing: .06em;
-      cursor: pointer; transition: background .2s;
-    }
-    #pw-submit:hover { background: #008a2b; }
-    #pw-error {
-      display: none;
-      font-family: 'mundial-narrow-variable', sans-serif;
-      font-size: 11px; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: rgba(255,100,100,.75);
-      margin-top: 4px;
-    }
-    @keyframes pw-shake {
-      0%,100% { transform: translateX(0); }
-      20%      { transform: translateX(-8px); }
-      60%      { transform: translateX(8px); }
-      80%      { transform: translateX(-4px); }
-    }
-  </style>
 
-  <div id="pw-gate">
-    <div id="pw-gate__inner">
-      <p id="pw-gate__eyebrow">Versión previa · Preview version</p>
-      <h1 id="pw-gate__wordmark">BES <span>V</span></h1>
-      <p id="pw-gate__sub">Bridging European Science · Oslo 2026</p>
-      <div id="pw-gate__divider"></div>
-      <form id="pw-form" autocomplete="off" novalidate>
-        <input
-          type="password"
-          id="pw-input"
-          placeholder="Contraseña · Password"
-          autocomplete="current-password"
-          autofocus
-          spellcheck="false"
-        >
-        <button type="submit" id="pw-submit">Acceder →&#xFE0E;</button>
-        <p id="pw-error">Contraseña incorrecta · Wrong password</p>
-      </form>
-    </div>
-  </div>
-  <!-- ═══════════════════════════════════════════════ -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
   <!-- NAV -->
   <nav class="nav" id="nav" aria-label="Navegación principal">
@@ -486,7 +530,7 @@
           <button class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
           <button class="lang-btn"        data-lang="en" aria-pressed="false">EN</button>
         </div>
-        <a href="#register" class="nav__cta" data-i18n="nav.register">Inscribirse →</a>
+        <a href="https://pci.jotform.com/261662950448363" target="_blank" rel="noopener" class="nav__cta" data-i18n="nav.register">Inscríbete →</a>
       </div>
       <button class="nav__hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
@@ -503,7 +547,7 @@
     <a href="#venue"         class="nav__mobile-link" data-i18n="nav.m.venue">Sede</a>
     <a href="#accommodation" class="nav__mobile-link" data-i18n="nav.m.accommodation">Alojamiento</a>
     <a href="#sponsors"      class="nav__mobile-link" data-i18n="nav.m.sponsors">Organizadores</a>
-    <a href="#register"      class="nav__mobile-link nav__mobile-link--cta" data-i18n="nav.m.register">Inscribirse →</a>
+    <a href="https://pci.jotform.com/261662950448363" target="_blank" rel="noopener" class="nav__mobile-link nav__mobile-link--cta" data-i18n="nav.m.register">Inscríbete →</a>
     <div class="nav__mobile-lang" role="group" aria-label="Seleccionar idioma">
       <button class="lang-btn-mobile active" data-lang="es" aria-pressed="true">ES · Español</button>
       <button class="lang-btn-mobile"        data-lang="en" aria-pressed="false">EN · English</button>
@@ -513,6 +557,7 @@
   <!-- 1. HERO -->
   <section class="hero" id="hero" aria-labelledby="hero-title">
     <div class="hero__bg" role="img" aria-label="BES V — Identidad visual"></div>
+    <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__content">
       <!-- Left: text -->
       <div class="hero__left">
@@ -525,17 +570,17 @@
           <span class="hero__eyebrow-text" data-i18n="hero.eyebrow">Bridging European Science V &nbsp;·&nbsp; Oslo 2026</span>
         </div>
         <h1 class="hero__title display" id="hero-title" data-i18n-html="hero.title">
-          La <span class="t-medium">innovación</span> y la <span class="t-medium">transferencia de conocimiento</span> entre la <span class="t-medium">academia</span> y la <span class="t-medium">industria</span>
+          <span class="t-medium">Innovación</span> y <span class="t-medium">transferencia de conocimiento</span> entre <span class="t-medium">Academia</span> e <span class="t-medium">Industria</span>
         </h1>
         <p class="hero__tagline" data-i18n="hero.tagline">
-          Convirtiendo avances académicos prometedores en soluciones reales para la industria y el mercado
+          Impulsando la investigación para identificar y desarrollar soluciones innovadoras, viables y aplicables al mercado para la promoción del bienestar social.
         </p>
         <div class="hero__meta">
           <div class="hero__meta-item">
             <div class="hero__meta-icon" aria-hidden="true"><span class="material-symbols-rounded">calendar_month</span></div>
             <div class="hero__meta-text">
               <span class="hero__meta-label" data-i18n="hero.date.label">Fecha</span>
-              <span data-i18n="hero.date.value">25–26 de septiembre, 2026</span>
+              <span data-i18n="hero.date.value">25–26 de septiembre de 2026</span>
             </div>
           </div>
           <div class="hero__meta-item">
@@ -547,8 +592,8 @@
           </div>
         </div>
         <div class="hero__actions">
-          <a href="#register" class="btn btn--primary">
-            <span data-i18n="hero.btn.register">Inscribirse</span>
+          <a href="https://pci.jotform.com/261662950448363" target="_blank" rel="noopener" class="btn btn--primary">
+            <span data-i18n="hero.btn.register">Inscríbete</span>
           </a>
         </div>
       </div>
@@ -565,25 +610,54 @@
   <section class="section" id="about" aria-labelledby="about-title">
     <div class="section__inner">
       <div class="about__grid">
-        <!-- Left: stats cards + language badge -->
-        <div class="about__stats-col reveal">
-          <div class="about__stats">
-            <div class="about__stat"><div class="about__stat-num">V</div><div class="about__stat-label" data-i18n="about.stat.edition">Edición BES</div></div>
-            <div class="about__stat"><div class="about__stat-num">~150</div><div class="about__stat-label" data-i18n="about.stat.attendees">Participantes</div></div>
-            <div class="about__stat"><div class="about__stat-num">2</div><div class="about__stat-label" data-i18n="about.stat.days">Jornadas de programa</div></div>
-            <div class="about__stat"><div class="about__stat-num">4+</div><div class="about__stat-label" data-i18n="about.stat.orgs">Organizaciones</div></div>
+        <!-- Left: image carousel + stats (carousel-first for desktop; pushed below text on mobile via CSS order) -->
+        <div class="about__media-col">
+          <div class="about__carousel" role="region" aria-roledescription="carrusel" aria-label="Oslo y Deichman Bjørvika">
+            <div class="carousel__track">
+              <figure class="carousel__slide" aria-hidden="false">
+                <img src="fotos-carrossel/igor-omilaev-eGGFZ5X2LnA-unsplash.jpg"
+                     alt="Imagen 1" loading="lazy" style="object-position: center 42%;">
+                <figcaption class="carousel__caption">BES V · Oslo 2026</figcaption>
+              </figure>
+              <figure class="carousel__slide" aria-hidden="true">
+                <img src="fotos-carrossel/jason-mavrommatis-nyL-rzwP-Mk-unsplash.jpg"
+                     alt="Imagen 2" loading="lazy" style="object-position: center 55%;">
+                <figcaption class="carousel__caption">BES V · Oslo 2026</figcaption>
+              </figure>
+              <figure class="carousel__slide" aria-hidden="true">
+                <img src="fotos-carrossel/tech-daily--A_Sod5xVDY-unsplash.jpg"
+                     alt="Imagen 3" loading="lazy" style="object-position: center 42%;">
+                <figcaption class="carousel__caption">BES V · Oslo 2026</figcaption>
+              </figure>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Imagen anterior">
+              <span class="material-symbols-rounded">chevron_left</span>
+            </button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Imagen siguiente">
+              <span class="material-symbols-rounded">chevron_right</span>
+            </button>
+            <div class="carousel__dots" role="group" aria-label="Navegación del carrusel">
+              <button class="carousel__dot active" aria-label="Imagen 1 de 3" aria-current="true"></button>
+              <button class="carousel__dot" aria-label="Imagen 2 de 3"></button>
+              <button class="carousel__dot" aria-label="Imagen 3 de 3"></button>
+            </div>
           </div>
-          <div class="about__lang" data-i18n-html="about.lang"><span class="material-symbols-rounded icon-inline">translate</span>&ensp;Evento bilingüe &nbsp;·&nbsp; Español / English</div>
         </div>
-        <!-- Right: text content -->
-        <div>
+        <!-- Right: section head + stats + text + lang badge (appears first on mobile via CSS order) -->
+        <div class="about__content-col">
           <div class="section__head">
             <span class="label" data-i18n="about.label">Sobre el evento · About</span>
             <h2 class="section__title display" id="about-title" data-i18n="about.title">¿Qué es Bridging European Science?</h2>
           </div>
-          <p class="about__text" data-i18n-html="about.text1"><strong>BES</strong> es el encuentro anual de la red <strong>RAICEX</strong> para científicos y tecnólogos españoles en Europa. Cada edición reúne a investigadores, emprendedores, inversores e instituciones para construir puentes reales entre la ciencia de vanguardia y la aplicación industrial.</p>
-          <p class="about__text" data-i18n-html="about.text2">La quinta edición, <strong>BES V</strong>, se celebrará en Oslo bajo el lema <em>"Innovación y transferencia de conocimiento entre academia e industria"</em>. Un evento bilingüe (español e inglés) que reunirá a cerca de 150 participantes internacionales y locales en la icónica Biblioteca Central de Oslo.</p>
-          <p class="about__text" data-i18n-html="about.text3">Organizado por <strong>IENO</strong> con el respaldo de <strong>ACES</strong>, <strong>ACEFI</strong>, <strong>CED</strong> y <strong>RAICEX</strong>, BES V busca ser el espacio de referencia donde la ciencia europea se convierte en soluciones reales para la sociedad.</p>
+          <div class="about__stats reveal">
+            <div class="about__stat"><div class="about__stat-num">V</div><div class="about__stat-label" data-i18n="about.stat.edition">Edición BES</div></div>
+            <div class="about__stat"><div class="about__stat-num">~100</div><div class="about__stat-label" data-i18n="about.stat.attendees">Participantes</div></div>
+            <div class="about__stat"><div class="about__stat-num">2</div><div class="about__stat-label" data-i18n="about.stat.days">Jornadas de programa</div></div>
+          </div>
+          <p class="about__text" data-i18n-html="about.text1"><strong>BRIDGING EUROPEAN SCIENCE (BES) es un encuentro bianual promovido por las asociaciones que integran RAICEX</strong>, que reúne a investigadores españoles distribuidos por todo el mundo para fortalecer la colaboración y el intercambio de conocimiento.</p>
+          <p class="about__text" data-i18n-html="about.text2"><strong>La quinta edición, BES V, se celebrará en Oslo bajo el lema «Innovación y Transferencia de Conocimiento entre Academia e Industria»</strong>, y reunirá a más de 100 participantes nacionales e internacionales en la icónica biblioteca central de Oslo.</p>
+          <p class="about__text" data-i18n-html="about.text3"><strong>Organizado por IENO</strong>, nuestra asociación Noruega, con el respaldo de <strong>ACES</strong> (Suecia), <strong>ACEFI</strong> (Finlandia), <strong>CED</strong> (Dinamarca) y <strong>RAICEX, BES V busca consolidarse como el espacio de referencia donde la ciencia se transforma en soluciones reales para la sociedad.</strong></p>
+          <div class="about__lang" data-i18n-html="about.lang"><span class="material-symbols-rounded icon-inline">translate</span>&ensp;Evento bilingüe &nbsp;·&nbsp; Español / English</div>
         </div>
       </div>
     </div>
@@ -591,32 +665,37 @@
 
   <!-- 3. PILLARS -->
   <section class="section section--dark" id="pillars" aria-labelledby="pillars-title">
+    <div class="pillars__bg" aria-hidden="true">
+      <div class="pillars__blob pillars__blob--1"></div>
+      <div class="pillars__blob pillars__blob--2"></div>
+      <div class="pillars__blob pillars__blob--3"></div>
+    </div>
     <div class="section__inner">
       <div class="section__head section__head--center">
         <span class="label" data-i18n="pillars.label">Ejes temáticos · Core pillars</span>
         <h2 class="section__title display" id="pillars-title" style="text-align:center;" data-i18n="pillars.title">Los 4 pilares de BES V</h2>
-        <p class="section__lead" style="text-align:center;margin-left:auto;margin-right:auto;" data-i18n="pillars.lead">Cuatro dimensiones fundamentales que estructuran el programa y las conversaciones del encuentro.</p>
+        <p class="section__lead" style="text-align:center;margin-left:auto;margin-right:auto;" data-i18n="pillars.lead">Cuatro dimensiones fundamentales articulan el programa y orientan las conversaciones del encuentro.</p>
       </div>
       <div class="pillars__grid">
         <div class="pillar reveal" style="--accent:#00A734;">
           <div class="pillar__icon" aria-hidden="true"><span class="material-symbols-rounded">rocket_launch</span></div>
           <h3 class="pillar__title display" data-i18n="pillar.1.title">Impacto</h3>
-          <p class="pillar__desc" data-i18n="pillar.1.desc">Acelerando descubrimientos desde el laboratorio hasta soluciones reales. De la ciencia al mundo.</p>
+          <p class="pillar__desc" data-i18n="pillar.1.desc">Del laboratorio a la sociedad civil: acelerando la innovación basada en la evidencia científica.</p>
         </div>
         <div class="pillar reveal" style="--accent:rgba(255,255,255,.7);">
           <div class="pillar__icon" aria-hidden="true"><span class="material-symbols-rounded">account_balance</span></div>
           <h3 class="pillar__title display" data-i18n="pillar.2.title">Finanzas</h3>
-          <p class="pillar__desc" data-i18n="pillar.2.desc">Desbloquear oportunidades: desde subvenciones de la UE hasta inversión privada en proyectos de alto potencial.</p>
+          <p class="pillar__desc" data-i18n="pillar.2.desc">Impulsando la innovación mediante el acceso a financiación estratégica: de las ayudas europeas al capital privado.</p>
         </div>
         <div class="pillar reveal" style="--accent:rgba(255,255,255,.7);">
           <div class="pillar__icon" aria-hidden="true"><span class="material-symbols-rounded">hub</span></div>
           <h3 class="pillar__title display" data-i18n="pillar.3.title">Ecosistemas</h3>
-          <p class="pillar__desc" data-i18n="pillar.3.desc">Impulsar nuevas colaboraciones conectando modelos emprendedores y ecosistemas de innovación a escala europea.</p>
+          <p class="pillar__desc" data-i18n="pillar.3.desc">Fomentando alianzas estratégicas que vinculan iniciativas emprendedoras y ecosistemas de innovación a escala global.</p>
         </div>
         <div class="pillar reveal" style="--accent:#00A734;">
           <div class="pillar__icon" aria-hidden="true"><span class="material-symbols-rounded">psychology</span></div>
           <h3 class="pillar__title display" data-i18n="pillar.4.title">Talento</h3>
-          <p class="pillar__desc" data-i18n="pillar.4.desc">Empoderar el crecimiento profesional de investigadores en transición hacia la industria.</p>
+          <p class="pillar__desc" data-i18n="pillar.4.desc">Acompañando a investigadores en su transición del ámbito académico al sector industrial.</p>
         </div>
       </div>
     </div>
@@ -627,8 +706,8 @@
     <div class="section__inner">
       <div class="section__head">
         <span class="label" data-i18n="programme.label">Agenda · Programme</span>
-        <h2 class="section__title display" id="programme-title" data-i18n="programme.title">Programa del evento</h2>
-        <p class="section__lead" data-i18n="programme.lead">Dos jornadas intensas de sesiones, debates y encuentros en el corazón de Oslo.</p>
+        <h2 class="section__title display" id="programme-title" data-i18n="programme.title">Programa</h2>
+        <p class="section__lead" data-i18n="programme.lead">Dos jornadas de intercambio, aprendizaje y oportunidades de encuentro en el corazón de Oslo.</p>
       </div>
       <div class="programme__tabs" role="tablist">
         <button class="programme__tab-btn active" role="tab" id="tab-day1" aria-selected="true" aria-controls="panel-day1" data-i18n="programme.tab1">Día 1 — Viernes 25 Sep</button>
@@ -667,7 +746,7 @@
           </div>
           <div class="sched-item sched-item--block">
             <div class="sched-time">14:00</div>
-            <div><div class="sched-title" data-i18n-html="s.d1.6.title">Pausa café <span class="tag tag--break">Coffee</span></div></div>
+            <div><div class="sched-title" data-i18n-html="s.d1.6.title">Pausa para el café <span class="tag tag--break">Coffee</span></div></div>
           </div>
           <div class="sched-item">
             <div class="sched-time">14:30</div>
@@ -681,9 +760,9 @@
             <div class="sched-time">16:15</div>
             <div><div class="sched-title" data-i18n="s.d1.9.title">Clausura de la jornada</div><div class="sched-desc" data-i18n="s.d1.9.desc">Closing remarks · Day 1</div></div>
           </div>
-          <div class="sched-item sched-item--social">
+          <div class="sched-item sched-item--block sched-item--event">
             <div class="sched-time">19:00</div>
-            <div><div class="sched-title" data-i18n-html="s.d1.10.title">Cena de gala <span class="tag tag--social">Gala dinner</span></div><div class="sched-desc" data-i18n="s.d1.10.desc">Gamle Raadhus Restaurant · Edificio histórico de 1641 · Junto a la Fortaleza Akershus</div></div>
+            <div><div class="sched-title" data-i18n-html="s.d1.10.title">Cena de gala <span class="tag tag--break">Gala dinner</span></div><div class="sched-desc" data-i18n="s.d1.10.desc">Gamle Raadhus Restaurant · Edificio histórico de 1641 · Junto a la Fortaleza de Akershus</div></div>
           </div>
         </div>
       </div>
@@ -730,9 +809,9 @@
             <div class="sched-time">14:30</div>
             <div><div class="sched-title" data-i18n="s.d2.8.title">Clausura del evento</div><div class="sched-desc" data-i18n="s.d2.8.desc">Closing remarks · BES V · Hasta la próxima edición</div></div>
           </div>
-          <div class="sched-item sched-item--social">
+          <div class="sched-item sched-item--block sched-item--event">
             <div class="sched-time">17:00</div>
-            <div><div class="sched-title" data-i18n-html="s.d2.9.title">Actividad social <span class="tag tag--social">Social activity</span></div><div class="sched-desc" data-i18n="s.d2.9.desc">Actividad grupal en Oslo · Group social activity</div></div>
+            <div><div class="sched-title" data-i18n-html="s.d2.9.title">Actividad social <span class="tag tag--break">Social activity</span></div><div class="sched-desc" data-i18n="s.d2.9.desc">Actividad grupal en Oslo · Group social activity</div></div>
           </div>
         </div>
       </div>
@@ -748,38 +827,68 @@
         <p class="section__lead" data-i18n="venue.lead">La Biblioteca Central de Oslo — un edificio icónico con vistas panorámicas al fiordo.</p>
       </div>
       <div class="venue__layout">
-        <!-- Left: venue identity + logistics -->
         <div class="venue__info reveal">
+          <div class="venue__carousel" role="region" aria-roledescription="carrusel" aria-label="Deichman Bjørvika">
+            <div class="carousel__track">
+              <figure class="carousel__slide" aria-hidden="false">
+                <img src="fotos-event/deichman-01.jpg" alt="Deichman Bjørvika — Biblioteca Central de Oslo" loading="lazy" style="object-position: 28% center;">
+              </figure>
+              <figure class="carousel__slide" aria-hidden="true">
+                <img src="fotos-event/deichman-02.jpg" alt="Deichman Bjørvika — Biblioteca Central de Oslo" loading="lazy" style="object-position: center 38%;">
+              </figure>
+              <figure class="carousel__slide" aria-hidden="true">
+                <img src="fotos-event/deichman-03.jpg" alt="Deichman Bjørvika — Biblioteca Central de Oslo" loading="lazy" style="object-position: center 42%;">
+              </figure>
+              <figure class="carousel__slide" aria-hidden="true">
+                <img src="fotos-event/deichman-04.jpg" alt="Deichman Bjørvika — Biblioteca Central de Oslo" loading="lazy" style="object-position: center 48%;">
+              </figure>
+              <figure class="carousel__slide" aria-hidden="true">
+                <img src="fotos-event/deichman-05.jpg" alt="Deichman Bjørvika — Biblioteca Central de Oslo" loading="lazy" style="object-position: center center;">
+              </figure>
+            </div>
+            <button class="carousel__btn carousel__btn--prev" aria-label="Imagen anterior"><span class="material-symbols-rounded">chevron_left</span></button>
+            <button class="carousel__btn carousel__btn--next" aria-label="Imagen siguiente"><span class="material-symbols-rounded">chevron_right</span></button>
+            <div class="carousel__dots" role="group" aria-label="Navegación del carrusel">
+              <button class="carousel__dot active" aria-label="Imagen 1 de 5" aria-current="true"></button>
+              <button class="carousel__dot" aria-label="Imagen 2 de 5"></button>
+              <button class="carousel__dot" aria-label="Imagen 3 de 5"></button>
+              <button class="carousel__dot" aria-label="Imagen 4 de 5"></button>
+              <button class="carousel__dot" aria-label="Imagen 5 de 5"></button>
+            </div>
+          </div>
           <div class="venue__address-chip">
             <span class="material-symbols-rounded">location_on</span>
             Anne-Cath. Vestlys plass 1, 0150 Oslo
           </div>
-          <p class="venue__text" data-i18n="venue.text">Inaugurada en 2020, Deichman Bjørvika es una de las bibliotecas más modernas de Europa. Su arquitectura característica, con el voladizo sobre el fiordo de Oslo, ofrece un escenario único e inspirador para BES V. El edificio se encuentra a tan solo 200 metros de la Estación Central de Oslo con acceso directo al transporte público y al aeropuerto.</p>
-          <div class="venue__facts">
-            <div class="venue__fact"><span class="material-symbols-rounded venue__fact-icon">corporate_fare</span><span data-i18n="venue.fact1">Capacidad: ~150 personas</span></div>
-            <div class="venue__fact"><span class="material-symbols-rounded venue__fact-icon">train</span><span data-i18n="venue.fact2">200 m de Oslo Sentralstasjon</span></div>
-            <div class="venue__fact"><span class="material-symbols-rounded venue__fact-icon">water</span><span data-i18n="venue.fact3">Vistas al fiordo de Oslo</span></div>
-            <div class="venue__fact"><span class="material-symbols-rounded venue__fact-icon">flight</span><span data-i18n="venue.fact4">~20 min del aeropuerto</span></div>
-          </div>
-          <a class="btn btn--ghost" href="https://maps.app.goo.gl/9FDmPVqTCZVZq8PA8" target="_blank" rel="noopener noreferrer" data-i18n="venue.map.gmaps">Cómo llegar · Get directions ↗&#xFE0E;</a>
         </div>
-        <!-- Right: rooms + gala -->
         <div class="venue__schedule">
-          <div class="venue__room reveal" style="--room-c:var(--c-navy);">
-            <div class="venue__room-day" data-i18n="venue.room1.day">Día 1 · Viernes 25 Sep</div>
-            <div class="venue__room-name" data-i18n="venue.room1.name">Sala Kringsjå</div>
-            <div class="venue__room-desc" data-i18n="venue.room1.desc">Pisos 4–5 · Voladizo con vistas al fiordo de Oslo · Toda la jornada</div>
+          <p class="venue__text reveal" data-i18n="venue.text">Deichman Bjørvika, la Biblioteca Central de Oslo, es uno de los referentes arquitectónicos y culturales más destacados de la ciudad. Inaugurada en 2020 y situada en el corazón del vibrante distrito de Bjørvika, combina diseño contemporáneo, innovación y conocimiento en un entorno único frente al fiordo de Oslo. Su arquitectura singular, caracterizada por su emblemático voladizo sobre el agua, ofrece un marco inspirador para BES V y para el intercambio entre la academia, la industria y el ecosistema de innovación. Además, su ubicación privilegiada, a tan solo 200 metros de Oslo S (Estación Central de Oslo), garantiza una conectividad excepcional para participantes nacionales e internacionales, con acceso directo al transporte público y al aeropuerto.</p>
+          <div class="venue__facts">
+            <div class="venue__fact reveal"><span class="material-symbols-rounded venue__fact-icon">menu_book</span><span data-i18n="venue.fact1">6 pisos de conocimiento</span></div>
+            <div class="venue__fact reveal"><span class="material-symbols-rounded venue__fact-icon">train</span><span data-i18n="venue.fact2">200 m de Oslo Sentralstasjon</span></div>
+            <div class="venue__fact reveal"><span class="material-symbols-rounded venue__fact-icon">water</span><span data-i18n="venue.fact3">Vistas al fiordo de Oslo</span></div>
+            <div class="venue__fact reveal"><span class="material-symbols-rounded venue__fact-icon">flight</span><span data-i18n="venue.fact4">~20 min del aeropuerto</span></div>
           </div>
-          <div class="venue__room reveal" style="--room-c:var(--c-gold);">
-            <div class="venue__room-day" data-i18n="venue.room2.day">Día 2 · Sábado 26 Sep</div>
-            <div class="venue__room-name" data-i18n="venue.room2.name">Centropa + Terraza</div>
-            <div class="venue__room-desc" data-i18n="venue.room2.desc">Espacio con terraza exterior · Vistas panorámicas · Ambiente informal</div>
+          <div class="venue__rooms">
+            <div class="venue__room reveal" style="--room-c:var(--c-navy);">
+              <div class="venue__room-day" data-i18n="venue.room1.day">Día 1 · Viernes 25 Sep</div>
+              <div class="venue__room-name" data-i18n="venue.room1.name">Sala Kringsjå</div>
+              <div class="venue__room-desc" data-i18n="venue.room1.desc">Pisos 4–5 · Voladizo con vistas al fiordo de Oslo · Toda la jornada</div>
+            </div>
+            <div class="venue__room reveal" style="--room-c:var(--c-gold);">
+              <div class="venue__room-day" data-i18n="venue.room2.day">Día 2 · Sábado 26 Sep</div>
+              <div class="venue__room-name" data-i18n="venue.room2.name">Centropa + Terraza</div>
+              <div class="venue__room-desc" data-i18n="venue.room2.desc">Espacio con terraza exterior · Vistas panorámicas · Ambiente informal</div>
+            </div>
           </div>
-          <div class="venue__gala reveal">
-            <div class="venue__gala-label" data-i18n="venue.gala.label">Cena de Gala · Día 1 · 19:00</div>
-            <div class="venue__gala-name">Gamle Raadhus Restaurant</div>
-            <div class="venue__gala-desc" data-i18n="venue.gala.desc">El restaurante más antiguo de Oslo, en un edificio histórico de 1641. Junto a la Fortaleza de Akershus, a pocos minutos de la biblioteca.</div>
-          </div>
+          <a class="venue__gala reveal" href="https://www.gamleraadhus.no/" target="_blank" rel="noopener noreferrer">
+            <div class="venue__gala-text">
+              <div class="venue__gala-label" data-i18n="venue.gala.label">Cena de gala · Día 1 · 19:00</div>
+              <div class="venue__gala-name">Gamle Raadhus Restaurant</div>
+              <div class="venue__gala-desc" data-i18n="venue.gala.desc">El restaurante más antiguo de Oslo, en un edificio histórico de 1641. Junto a la Fortaleza de Akershus, a pocos minutos de la biblioteca.</div>
+            </div>
+            <img src="fotos-event/jay-wennington-N_Y88TWmGwA-unsplash.jpg" alt="Gamle Raadhus Restaurant — Oslo" class="venue__gala-photo" loading="lazy">
+          </a>
         </div>
       </div>
     </div>
@@ -793,7 +902,6 @@
           </div>
           <div class="venue__map-actions">
             <a class="venue__map-btn" href="https://maps.app.goo.gl/9FDmPVqTCZVZq8PA8" target="_blank" rel="noopener noreferrer" data-i18n="venue.map.gmaps">Cómo llegar · Get directions ↗&#xFE0E;</a>
-            <a class="venue__map-btn venue__map-btn--osm" href="https://www.openstreetmap.org/?mlat=59.9087481&mlon=10.7526026#map=18/59.9087481/10.7526026" target="_blank" rel="noopener noreferrer">OpenStreetMap ↗&#xFE0E;</a>
           </div>
         </div>
         <div class="venue__map-frame">
@@ -822,11 +930,13 @@
       </div>
       <div class="hotels__grid">
         <div class="hotel reveal">
+          <div class="hotel__accent"></div>
           <div class="hotel__body">
             <div class="hotel__header">
               <div class="hotel__stars">★★★</div>
               <div class="hotel__name">City Box</div>
               <div class="hotel__location">Sentrum · Oslo</div>
+              <div class="hotel__dist"><span class="material-symbols-rounded">directions_walk</span>~6 min</div>
             </div>
             <div class="hotel__prices">
               <div class="hotel__price-row"><span class="hotel__price-label" data-i18n="acc.single">Individual · Single</span><span class="hotel__price-value">~100 EUR/noche</span></div>
@@ -837,11 +947,13 @@
           </div>
         </div>
         <div class="hotel reveal">
+          <div class="hotel__accent"></div>
           <div class="hotel__body">
             <div class="hotel__header">
               <div class="hotel__stars">★★★</div>
               <div class="hotel__name">Thon Hotel Astoria</div>
               <div class="hotel__location">Sentrum · Oslo</div>
+              <div class="hotel__dist"><span class="material-symbols-rounded">directions_walk</span>~8 min</div>
             </div>
             <div class="hotel__prices">
               <div class="hotel__price-row"><span class="hotel__price-label" data-i18n="acc.single">Individual · Single</span><span class="hotel__price-value">~135 EUR/noche</span></div>
@@ -852,11 +964,13 @@
           </div>
         </div>
         <div class="hotel reveal">
+          <div class="hotel__accent"></div>
           <div class="hotel__body">
             <div class="hotel__header">
               <div class="hotel__stars">★★★★</div>
               <div class="hotel__name">Thon Hotel Opera</div>
               <div class="hotel__location">Bjørvika · Oslo</div>
+              <div class="hotel__dist"><span class="material-symbols-rounded">directions_walk</span>~2 min</div>
             </div>
             <div class="hotel__prices">
               <div class="hotel__price-row"><span class="hotel__price-label" data-i18n="acc.single">Individual · Single</span><span class="hotel__price-value">~215 EUR/noche</span></div>
@@ -873,11 +987,29 @@
   <!-- 7. SPONSORS -->
   <section class="section sponsors--minimal" id="sponsors">
     <div class="section__inner">
-      <div class="sponsors__banner">
-        <img src="barra%20de%20logos%202.png"
-             alt="Organizadores y patrocinadores de BES V"
-             class="sponsors__banner-img"
-             loading="lazy">
+      <p class="sponsors__label" data-i18n="spon.label">Organización y apoyo · Organisation</p>
+      <div class="sponsors__grid">
+        <a class="sponsor__item reveal" href="https://www.ieno.no/" target="_blank" rel="noopener noreferrer" aria-label="IENO — Investigadores Españoles en Noruega">
+          <img src="logos-sponsors/BESV_sponsor-ieno-300x.png" alt="IENO — Investigadores Españoles en Noruega" loading="lazy">
+        </a>
+        <a class="sponsor__item reveal" href="http://gain.xunta.gal/" target="_blank" rel="noopener noreferrer" aria-label="GAIN — Axencia Galega de Innovación">
+          <img src="logos-sponsors/BESV_sponsor-axencia-300px.png" alt="GAIN — Axencia Galega de Innovación" loading="lazy">
+        </a>
+        <a class="sponsor__item reveal" href="https://www.aecid.es/" target="_blank" rel="noopener noreferrer" aria-label="Embajada de España en Noruega y AECID">
+          <img src="logos-sponsors/BESV_sponsor-embajada-300px.png" alt="Embajada de España en Noruega — AECID" loading="lazy">
+        </a>
+        <a class="sponsor__item reveal" href="https://www.fecyt.es/" target="_blank" rel="noopener noreferrer" aria-label="FECYT — Fundación Española para la Ciencia y la Tecnología">
+          <img src="logos-sponsors/BESV_sponsor-fcyt-300px.png" alt="Ministerio de Ciencia, Innovación y Universidades — FECYT" loading="lazy">
+        </a>
+        <a class="sponsor__item reveal" href="https://www.fundacionareces.es/fundacionareces/es/" target="_blank" rel="noopener noreferrer" aria-label="Fundación Ramón Areces">
+          <img src="logos-sponsors/BESV_sponsor-fundacion-ramon-300px.png" alt="Fundación Ramón Areces" loading="lazy">
+        </a>
+        <a class="sponsor__item reveal" href="https://raicex.org/" target="_blank" rel="noopener noreferrer" aria-label="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior">
+          <img src="logos-sponsors/BESV_sponsor-raicex-300px.png" alt="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior" loading="lazy">
+        </a>
+        <div class="sponsor__item sponsor__item--assoc reveal">
+          <img src="logos-sponsors/sponsor-asociaciones-300px-v2.svg" alt="ACES, ACEFI, CED — Asociaciones de científicos españoles en el exterior" loading="lazy">
+        </div>
       </div>
     </div>
   </section>
@@ -888,16 +1020,14 @@
       <span class="label" style="text-align:center;display:block;color:#fff;" data-i18n="reg.label">Inscripción · Registration</span>
       <h2 class="register__title display" id="register-title" data-i18n-html="reg.title">Únete a BES&nbsp;V<br>en <em>Oslo</em></h2>
       <p class="register__sub" data-i18n="reg.sub">25–26 de septiembre de 2026 · Deichman Bjørvika, Oslo</p>
-      <a href="#" class="btn btn--primary" style="font-size:1.125rem;padding:18px 48px;display:inline-flex;" aria-disabled="true" tabindex="-1">
-        <span data-i18n="reg.btn">Inscribirse</span>
+      <a href="https://pci.jotform.com/261662950448363" target="_blank" rel="noopener" class="btn btn--primary" style="font-size:1.125rem;padding:17px 48px 19px;display:inline-flex;">
+        <span data-i18n="reg.btn">Inscríbete</span>
       </a>
-      <p class="register__note"><span class="material-symbols-rounded">warning</span><span data-i18n="reg.note"> Formulario de inscripción en desarrollo · Registration form coming soon</span></p>
-      <div class="register__divider" aria-hidden="true"></div>
       <div class="register__kpis">
-        <div><span class="register__kpi-num">~150</span><div class="register__kpi-label" data-i18n-html="reg.kpi.att">Participantes esperados<br><span style="opacity:.6">Expected attendees</span></div></div>
-        <div><span class="register__kpi-num">2</span><div class="register__kpi-label" data-i18n-html="reg.kpi.days">Días de programa<br><span style="opacity:.6">Days of programme</span></div></div>
-        <div><span class="register__kpi-num">4</span><div class="register__kpi-label" data-i18n-html="reg.kpi.pillars">Ejes temáticos<br><span style="opacity:.6">Core pillars</span></div></div>
-        <div><span class="register__kpi-num">V</span><div class="register__kpi-label" data-i18n-html="reg.kpi.edition">Edición BES<br><span style="opacity:.6">BES edition</span></div></div>
+        <div><span class="register__kpi-num">~100</span><div class="register__kpi-label" data-i18n="reg.kpi.att">Participantes esperados</div></div>
+        <div><span class="register__kpi-num">2</span><div class="register__kpi-label" data-i18n="reg.kpi.days">Días de programa</div></div>
+        <div><span class="register__kpi-num">4</span><div class="register__kpi-label" data-i18n="reg.kpi.pillars">Ejes temáticos</div></div>
+        <div><span class="register__kpi-num">V</span><div class="register__kpi-label" data-i18n="reg.kpi.edition">Edición BES</div></div>
       </div>
     </div>
   </section>
@@ -913,7 +1043,7 @@
         <li><a href="#about"     class="footer__link" data-i18n="footer.about">Sobre BES</a></li>
         <li><a href="#programme" class="footer__link" data-i18n="footer.programme">Programa</a></li>
         <li><a href="#venue"     class="footer__link" data-i18n="footer.venue">Sede</a></li>
-        <li><a href="#register"  class="footer__link" data-i18n="footer.register">Inscribirse</a></li>
+        <li><a href="#register"  class="footer__link" data-i18n="footer.register">Inscríbete</a></li>
       </ul>
       <div class="footer__copy">
         <p data-i18n-html="footer.rights">© 2026 <a href="https://raicex.org" target="_blank" rel="noopener noreferrer">RAICEX</a> · Todos los derechos reservados</p>
@@ -928,31 +1058,31 @@
   const T = {
     es: {
       'banner': 'Versión preliminar — identidad visual en desarrollo · Esta página no es la versión definitiva',
-      'nav.about':'Sobre BES','nav.pillars':'Ejes','nav.programme':'Programa','nav.venue':'Sede','nav.accommodation':'Alojamiento','nav.sponsors':'Organizadores','nav.register':'Inscribirse →︎',
-      'nav.m.about':'Sobre BES','nav.m.pillars':'Ejes temáticos','nav.m.programme':'Programa','nav.m.venue':'Sede','nav.m.accommodation':'Alojamiento','nav.m.sponsors':'Organizadores','nav.m.register':'Inscribirse →︎',
+      'nav.about':'Sobre BES','nav.pillars':'Ejes','nav.programme':'Programa','nav.venue':'Sede','nav.accommodation':'Alojamiento','nav.sponsors':'Organizadores','nav.register':'Inscríbete →︎',
+      'nav.m.about':'Sobre BES','nav.m.pillars':'Ejes temáticos','nav.m.programme':'Programa','nav.m.venue':'Sede','nav.m.accommodation':'Alojamiento','nav.m.sponsors':'Organizadores','nav.m.register':'Inscríbete →︎',
       'hero.badge.edition':'Quinta edición · Fifth edition','hero.badge.city':'Oslo, Noruega',
       'hero.eyebrow':'Oslo, Noruega  ·  25–26 septiembre 2026',
-      'hero.title':'La <span class="t-medium">innovación</span> y la <span class="t-medium">transferencia de conocimiento</span> entre la <span class="t-medium">academia</span> y la <span class="t-medium">industria</span>',
-      'hero.tagline':'Convirtiendo avances académicos prometedores en soluciones reales para la industria y el mercado',
-      'hero.date.label':'Fecha','hero.date.value':'25–26 de septiembre, 2026',
+      'hero.title':'<span class="t-medium">Innovación</span> y <span class="t-medium">transferencia de conocimiento</span> entre <span class="t-medium">Academia</span> e <span class="t-medium">Industria</span>',
+      'hero.tagline':'Impulsando la investigación para identificar y desarrollar soluciones innovadoras, viables y aplicables al mercado para la promoción del bienestar social.',
+      'hero.date.label':'Fecha','hero.date.value':'25–26 de septiembre de 2026',
       'hero.venue.label':'Sede','hero.venue.value':'Deichman Bjørvika, Oslo',
-      'hero.btn.register':'Inscribirse',
+      'hero.btn.register':'Inscríbete',
       'about.label':'Sobre el evento · About','about.title':'¿Qué es Bridging European Science?',
-      'about.text1':'<strong>BES</strong> es el encuentro anual de la red <strong>RAICEX</strong> para científicos y tecnólogos españoles en Europa. Cada edición reúne a investigadores, emprendedores, inversores e instituciones para construir puentes reales entre la ciencia de vanguardia y la aplicación industrial.',
-      'about.text2':'La quinta edición, <strong>BES V</strong>, se celebrará en Oslo bajo el lema <em>"Innovación y transferencia de conocimiento entre academia e industria"</em>. Un evento bilingüe (español e inglés) que reunirá a cerca de 150 participantes internacionales y locales en la icónica Biblioteca Central de Oslo.',
-      'about.text3':'Organizado por <strong>IENO</strong> con el respaldo de <strong>ACES</strong>, <strong>ACEFI</strong>, <strong>CED</strong> y <strong>RAICEX</strong>, BES V busca ser el espacio de referencia donde la ciencia europea se convierte en soluciones reales para la sociedad.',
+      'about.text1':'<strong>BRIDGING EUROPEAN SCIENCE (BES) es un encuentro bianual promovido por las asociaciones que integran RAICEX</strong>, que reúne a investigadores españoles distribuidos por todo el mundo para fortalecer la colaboración y el intercambio de conocimiento.',
+      'about.text2':'<strong>La quinta edición, BES V, se celebrará en Oslo bajo el lema «Innovación y Transferencia de Conocimiento entre Academia e Industria»</strong>, y reunirá a más de 100 participantes nacionales e internacionales en la icónica biblioteca central de Oslo.',
+      'about.text3':'<strong>Organizado por IENO</strong>, nuestra asociación Noruega, con el respaldo de <strong>ACES</strong> (Suecia), <strong>ACEFI</strong> (Finlandia), <strong>CED</strong> (Dinamarca) y <strong>RAICEX, BES V busca consolidarse como el espacio de referencia donde la ciencia se transforma en soluciones reales para la sociedad.</strong>',
       'about.stat.edition':'Edición BES','about.stat.attendees':'Participantes','about.stat.days':'Jornadas de programa','about.stat.orgs':'Organizaciones',
       'about.lang':'<span class="material-symbols-rounded icon-inline">translate</span>&ensp;Evento bilingüe &nbsp;·&nbsp; Español / English',
       'about.badge.edition':'Quinta edición · 2026','about.badge.lang':'Evento bilingüe ES / EN',
       'pillars.label':'Ejes temáticos · Core pillars','pillars.title':'Los 4 pilares de BES V',
-      'pillars.lead':'Cuatro dimensiones fundamentales que estructuran el programa y las conversaciones del encuentro.',
+      'pillars.lead':'Cuatro dimensiones fundamentales articulan el programa y orientan las conversaciones del encuentro.',
       'pillar.1.title':'Impacto','pillar.2.title':'Finanzas','pillar.3.title':'Ecosistemas','pillar.4.title':'Talento',
-      'pillar.1.desc':'Acelerando descubrimientos desde el laboratorio hasta soluciones reales. De la ciencia al mundo.',
-      'pillar.2.desc':'Desbloquear oportunidades: desde subvenciones de la UE hasta inversión privada en proyectos de alto potencial.',
-      'pillar.3.desc':'Impulsar nuevas colaboraciones conectando modelos emprendedores y ecosistemas de innovación a escala europea.',
-      'pillar.4.desc':'Empoderar el crecimiento profesional de investigadores en transición hacia la industria.',
-      'programme.label':'Agenda · Programme','programme.title':'Programa del evento',
-      'programme.lead':'Dos jornadas intensas de sesiones, debates y encuentros en el corazón de Oslo.',
+      'pillar.1.desc':'Del laboratorio a la sociedad civil: acelerando la innovación basada en la evidencia científica.',
+      'pillar.2.desc':'Impulsando la innovación mediante el acceso a financiación estratégica: de las ayudas europeas al capital privado.',
+      'pillar.3.desc':'Fomentando alianzas estratégicas que vinculan iniciativas emprendedoras y ecosistemas de innovación a escala global.',
+      'pillar.4.desc':'Acompañando a investigadores en su transición del ámbito académico al sector industrial.',
+      'programme.label':'Agenda · Programme','programme.title':'Programa',
+      'programme.lead':'Dos jornadas de intercambio, aprendizaje y oportunidades de encuentro en el corazón de Oslo.',
       'programme.tab1':'Día 1 — Viernes 25 Sep','programme.tab2':'Día 2 — Sábado 26 Sep',
       'programme.day1.title':'Viernes · Friday','programme.day1.sub':'Sala Kringsjå · Pisos 4–5 · Deichman Bjørvika',
       'programme.day2.title':'Sábado · Saturday','programme.day2.sub':'Centropa + Terraza · Deichman Bjørvika',
@@ -961,11 +1091,11 @@
       's.d1.3.title':'Sesión I — The money talk <span class="tag tag--session">Session I</span>','s.d1.3.desc':'Lista de comprobación del inversor para el éxito de una startup · Charla + mesa redonda',
       's.d1.4.title':'Pausa para el almuerzo <span class="tag tag--break">Lunch</span>',
       's.d1.5.title':'Sesión II — Financiación europea <span class="tag tag--session">Session II</span>','s.d1.5.desc':'El panorama de la financiación de la UE para tecnología e innovación',
-      's.d1.6.title':'Pausa café <span class="tag tag--break">Coffee</span>',
+      's.d1.6.title':'Pausa para el café <span class="tag tag--break">Coffee</span>',
       's.d1.7.title':'Sesión III — Transferencia de conocimiento <span class="tag tag--session">Session III</span>','s.d1.7.desc':'De las ideas a la creación de empresas · Transferring knowledge',
       's.d1.8.title':'Keynote — Tecnología de vanguardia <span class="tag tag--keynote">Keynote</span>','s.d1.8.desc':'Envisioning powering technology for cutting-edge research: lessons from ESFRI',
       's.d1.9.title':'Clausura de la jornada','s.d1.9.desc':'Closing remarks · Day 1',
-      's.d1.10.title':'Cena de gala <span class="tag tag--social">Gala dinner</span>','s.d1.10.desc':'Gamle Raadhus Restaurant · Edificio histórico de 1641 · Junto a la Fortaleza Akershus',
+      's.d1.10.title':'Cena de gala <span class="tag tag--break">Gala dinner</span>','s.d1.10.desc':'Gamle Raadhus Restaurant · Edificio histórico de 1641 · Junto a la Fortaleza de Akershus',
       's.d2.1.title':'Recepción con café <span class="tag tag--open">Reception</span>','s.d2.1.desc':'Coffee reception · Networking',
       's.d2.2.title':'Apertura · Opening',
       's.d2.3.title':'Sesión IV — ¿Qué es RAICEX? <span class="tag tag--session">Session IV</span>','s.d2.3.desc':'Flash talks de presentación de la red',
@@ -974,31 +1104,31 @@
       's.d2.6.title':'Pausa para el almuerzo <span class="tag tag--break">Lunch</span>',
       's.d2.7.title':'Sesión VI — Tu elección profesional <span class="tag tag--session">Session VI</span>','s.d2.7.desc':'¿Emprendedor o profesional de la industria?',
       's.d2.8.title':'Clausura del evento','s.d2.8.desc':'Closing remarks · BES V · Hasta la próxima edición',
-      's.d2.9.title':'Actividad social <span class="tag tag--social">Social activity</span>','s.d2.9.desc':'Actividad grupal en Oslo · Group social activity',
+      's.d2.9.title':'Actividad social <span class="tag tag--break">Social activity</span>','s.d2.9.desc':'Actividad grupal en Oslo · Group social activity',
       'venue.label':'Sede del evento · Venue','venue.lead':'La Biblioteca Central de Oslo — un edificio icónico con vistas panorámicas al fiordo.',
       'venue.img.cap':'Deichman Bjørvika · Oslo, Noruega  ·  Inaugurada 2020',
-      'venue.gala.label':'Cena de Gala · Día 1 · 19:00',
+      'venue.gala.label':'Cena de gala · Día 1 · 19:00',
       'venue.gala.desc':'El restaurante más antiguo de Oslo, en un edificio histórico de 1641. Junto a la Fortaleza de Akershus, a pocos minutos de la biblioteca.',
       'venue.name':'Oslo Central Library','venue.subtitle':'Biblioteca Central de Oslo',
-      'venue.text':'Inaugurada en 2020, Deichman Bjørvika es una de las bibliotecas más modernas de Europa. Su arquitectura característica, con el voladizo sobre el fiordo de Oslo, ofrece un escenario único e inspirador para BES V. El edificio se encuentra a tan solo 200 metros de la Estación Central de Oslo con acceso directo al transporte público y al aeropuerto.',
+      'venue.text':'Deichman Bjørvika, la Biblioteca Central de Oslo, es uno de los referentes arquitectónicos y culturales más destacados de la ciudad. Inaugurada en 2020 y situada en el corazón del vibrante distrito de Bjørvika, combina diseño contemporáneo, innovación y conocimiento en un entorno único frente al fiordo de Oslo. Su arquitectura singular, caracterizada por su emblemático voladizo sobre el agua, ofrece un marco inspirador para BES V y para el intercambio entre la academia, la industria y el ecosistema de innovación. Además, su ubicación privilegiada, a tan solo 200 metros de Oslo S (Estación Central de Oslo), garantiza una conectividad excepcional para participantes nacionales e internacionales, con acceso directo al transporte público y al aeropuerto.',
       'venue.room1.day':'Día 1 · Viernes 25 Sep','venue.room1.name':'Sala Kringsjå','venue.room1.desc':'Pisos 4–5 · Voladizo con vistas al fiordo de Oslo · Toda la jornada',
       'venue.room2.day':'Día 2 · Sábado 26 Sep','venue.room2.name':'Centropa + Terraza','venue.room2.desc':'Espacio con terraza exterior · Vistas panorámicas · Ambiente informal',
-      'venue.fact1':'Capacidad: ~150 personas','venue.fact2':'200 m de Oslo Sentralstasjon','venue.fact3':'Vistas al fiordo de Oslo','venue.fact4':'~20 min del aeropuerto',
+      'venue.fact1':'6 pisos de conocimiento','venue.fact2':'200 m de Oslo Sentralstasjon','venue.fact3':'Vistas al fiordo de Oslo','venue.fact4':'~20 min del aeropuerto',
       'acc.label':'Alojamiento · Accommodation','acc.title':'Hoteles sugeridos',
       'acc.lead':'Opciones cercanas a la sede con tarifas orientativas. Se recomienda reservar con antelación.',
       'acc.single':'Individual · Single','acc.double':'Doble · Double','acc.note':'* Tarifas orientativas, sujetas a disponibilidad',
-      'spon.label':'Organización y apoyo · Organisation','spon.title':'Organizadores y patrocinadores',
+      'spon.label':'Organizado y apoyado por','spon.title':'Organizadores y patrocinadores',
       'spon.group1':'Organización principal','spon.group2':'Con el apoyo de · Supported by',
       'reg.label':'Inscripción · Registration','reg.title':'Únete a BES V<br>en <em>Oslo</em>',
       'reg.sub':'25–26 de septiembre de 2026 · Deichman Bjørvika, Oslo',
-      'reg.btn':'Inscribirse',
+      'reg.btn':'Inscríbete',
       'reg.note':' Formulario de inscripción en desarrollo · Registration form coming soon',
-      'reg.kpi.att':'Participantes esperados<br><span style="opacity:.6">Expected attendees</span>',
-      'reg.kpi.days':'Días de programa<br><span style="opacity:.6">Days of programme</span>',
-      'reg.kpi.pillars':'Ejes temáticos<br><span style="opacity:.6">Core pillars</span>',
-      'reg.kpi.edition':'Edición BES<br><span style="opacity:.6">BES edition</span>',
+      'reg.kpi.att':'Participantes esperados',
+      'reg.kpi.days':'Días de programa',
+      'reg.kpi.pillars':'Ejes temáticos',
+      'reg.kpi.edition':'Edición BES',
       'footer.brand.info':'25–26 septiembre 2026 · Oslo, Noruega',
-      'footer.about':'Sobre BES','footer.programme':'Programa','footer.venue':'Sede','footer.register':'Inscribirse',
+      'footer.about':'Sobre BES','footer.programme':'Programa','footer.venue':'Sede','footer.register':'Inscríbete',
       'footer.rights':'© 2026 <a href="https://raicex.org" target="_blank" rel="noopener noreferrer">RAICEX</a> · Todos los derechos reservados',
       'footer.version':'Versión preliminar — identidad visual en desarrollo'
     },
@@ -1014,9 +1144,9 @@
       'hero.venue.label':'Venue','hero.venue.value':'Deichman Bjørvika, Oslo',
       'hero.btn.register':'Register',
       'about.label':'About the event · Sobre BES','about.title':'What is Bridging European Science?',
-      'about.text1':'<strong>BES</strong> is the annual gathering of the <strong>RAICEX</strong> network for Spanish scientists and technologists across Europe. Each edition brings together researchers, entrepreneurs, investors and institutions to build real bridges between cutting-edge science and industrial application.',
-      'about.text2':'The fifth edition, <strong>BES V</strong>, will take place in Oslo under the theme <em>"Innovation and knowledge transfer between academia and industry"</em>. A bilingual (Spanish and English) event gathering around 150 international and local participants at Oslo\'s iconic Central Library.',
-      'about.text3':'Organised by <strong>IENO</strong> with the support of <strong>ACES</strong>, <strong>ACEFI</strong>, <strong>CED</strong> and <strong>RAICEX</strong>, BES V aims to be the reference space where European science becomes real solutions for society.',
+      'about.text1':'<strong>BES</strong> is the annual gathering of the <strong>RAICEX</strong> network for Spanish scientists and technologists across Europe. Each edition brings together researchers, entrepreneurs, investors and institutions to build real bridges between cutting-edge science and its industrial application.',
+      'about.text2':'The fifth edition, <strong>BES V</strong>, will take place in Oslo under the theme «Innovation and knowledge transfer between academia and industry». It will be a bilingual (Spanish and English) event bringing together around 100 national and international participants at Oslo\'s iconic Central Library.',
+      'about.text3':'<strong>Organised by IENO</strong> with the support of <strong>ACES</strong>, <strong>ACEFI</strong>, <strong>CED</strong> and <strong>RAICEX, BES V aims to establish itself as the reference space where European science becomes real solutions for society.</strong>',
       'about.stat.edition':'BES Edition','about.stat.attendees':'Attendees','about.stat.days':'Programme days','about.stat.orgs':'Organisations',
       'about.lang':'<span class="material-symbols-rounded icon-inline">translate</span>&ensp;Bilingual event &nbsp;·&nbsp; English / Español',
       'about.badge.edition':'Fifth edition · 2026','about.badge.lang':'Bilingual event ES / EN',
@@ -1041,7 +1171,7 @@
       's.d1.7.title':'Session III — Knowledge transfer <span class="tag tag--session">Session III</span>','s.d1.7.desc':'Transferring knowledge: from ideas to founding companies',
       's.d1.8.title':'Keynote — Technology for cutting-edge research <span class="tag tag--keynote">Keynote</span>','s.d1.8.desc':'Envisioning powering technology for cutting-edge research: lessons from ESFRI',
       's.d1.9.title':'Closing remarks · Day 1','s.d1.9.desc':'Clausura de la primera jornada',
-      's.d1.10.title':'Gala dinner <span class="tag tag--social">Gala dinner</span>','s.d1.10.desc':'Gamle Raadhus Restaurant · Historic building from 1641 · Near Akershus Fortress',
+      's.d1.10.title':'Gala dinner <span class="tag tag--break">Gala dinner</span>','s.d1.10.desc':'Gamle Raadhus Restaurant · Historic building from 1641 · Near Akershus Fortress',
       's.d2.1.title':'Coffee reception <span class="tag tag--open">Reception</span>','s.d2.1.desc':'Recepción con café · Networking',
       's.d2.2.title':'Opening · Apertura',
       's.d2.3.title':'Session IV — What is RAICEX? <span class="tag tag--session">Session IV</span>','s.d2.3.desc':'Flash talks presenting the network',
@@ -1050,29 +1180,29 @@
       's.d2.6.title':'Lunch break <span class="tag tag--break">Lunch</span>',
       's.d2.7.title':'Session VI — Your career choice <span class="tag tag--session">Session VI</span>','s.d2.7.desc':'Entrepreneur or industry professional?',
       's.d2.8.title':'Closing remarks · BES V','s.d2.8.desc':'Clausura del evento · See you at the next edition',
-      's.d2.9.title':'Social activity <span class="tag tag--social">Social activity</span>','s.d2.9.desc':'Group social activity in Oslo · Actividad grupal',
+      's.d2.9.title':'Social activity <span class="tag tag--break">Social activity</span>','s.d2.9.desc':'Group social activity in Oslo · Actividad grupal',
       'venue.label':'Event venue · Sede','venue.lead':'Oslo Central Library — an iconic building with panoramic views over the fjord.',
       'venue.img.cap':'Deichman Bjørvika · Oslo, Norway  ·  Opened 2020',
       'venue.gala.label':'Gala Dinner · Day 1 · 19:00',
       'venue.gala.desc':'Oslo\'s oldest restaurant, housed in a historic building from 1641. Located near Akershus Fortress, a few minutes from the library.',
       'venue.name':'Oslo Central Library','venue.subtitle':'Deichman Bjørvika',
-      'venue.text':'Opened in 2020, Deichman Bjørvika is one of the most modern libraries in Europe. Its distinctive architecture, with the cantilever over Oslo Fjord, provides a unique and inspiring setting for BES V. The building is just 200 metres from Oslo Central Station with direct access to public transport and the airport.',
+      'venue.text':'Deichman Bjørvika, the Oslo Public Library, is one of the city\'s most iconic architectural and cultural landmarks. Opened in 2020 and located in the heart of the vibrant Bjørvika district, it brings together contemporary design, innovation and knowledge in a unique setting overlooking the Oslo Fjord. Its distinctive architecture — defined by the celebrated cantilever over the water — provides an inspiring backdrop for BES V and for dialogue between academia, industry and the innovation ecosystem. Its prime location, just 200 metres from Oslo S (Oslo Central Station), ensures exceptional connectivity for national and international participants, with direct access to public transport and the airport.',
       'venue.room1.day':'Day 1 · Friday 25 Sep','venue.room1.name':'Sala Kringsjå','venue.room1.desc':'Floors 4–5 · Cantilever with views over Oslo Fjord · Full day',
       'venue.room2.day':'Day 2 · Saturday 26 Sep','venue.room2.name':'Centropa + Terrace','venue.room2.desc':'Space with outdoor terrace · Panoramic views · Informal setting',
-      'venue.fact1':'Capacity: ~150 people','venue.fact2':'200 m from Oslo Central Station','venue.fact3':'Views over Oslo Fjord','venue.fact4':'~20 min from the airport',
+      'venue.fact1':'6 floors of knowledge','venue.fact2':'200 m from Oslo Central Station','venue.fact3':'Views over Oslo Fjord','venue.fact4':'~20 min from the airport',
       'acc.label':'Accommodation · Alojamiento','acc.title':'Suggested hotels',
       'acc.lead':'Options near the venue with indicative rates. Early booking recommended.',
       'acc.single':'Single · Individual','acc.double':'Double · Doble','acc.note':'* Indicative prices, subject to availability',
-      'spon.label':'Organisation & support','spon.title':'Organisers and sponsors',
+      'spon.label':'Organized and supported by','spon.title':'Organisers and sponsors',
       'spon.group1':'Lead organisation','spon.group2':'Supported by · Con el apoyo de',
       'reg.label':'Registration · Inscripción','reg.title':'Join BES V<br>in <em>Oslo</em>',
       'reg.sub':'25–26 September 2026 · Deichman Bjørvika, Oslo',
       'reg.btn':'Register',
       'reg.note':' Registration form coming soon · Formulario en desarrollo',
-      'reg.kpi.att':'Expected attendees<br><span style="opacity:.6">Participantes esperados</span>',
-      'reg.kpi.days':'Days of programme<br><span style="opacity:.6">Días de programa</span>',
-      'reg.kpi.pillars':'Core pillars<br><span style="opacity:.6">Ejes temáticos</span>',
-      'reg.kpi.edition':'BES edition<br><span style="opacity:.6">Edición BES</span>',
+      'reg.kpi.att':'Expected attendees',
+      'reg.kpi.days':'Days of programme',
+      'reg.kpi.pillars':'Core pillars',
+      'reg.kpi.edition':'BES edition',
       'footer.brand.info':'25–26 September 2026 · Oslo, Norway',
       'footer.about':'About BES','footer.programme':'Programme','footer.venue':'Venue','footer.register':'Register',
       'footer.rights':'© 2026 <a href="https://raicex.org" target="_blank" rel="noopener noreferrer">RAICEX</a> · All rights reserved',
@@ -1137,7 +1267,10 @@
       this.classList.add('active');
       this.setAttribute('aria-selected','true');
       const p = document.getElementById(this.getAttribute('aria-controls'));
-      if (p) p.classList.add('active');
+      if (p) {
+        p.querySelectorAll('.sched-item').forEach(el => { el.style.animation = 'none'; void el.offsetHeight; el.style.animation = ''; });
+        p.classList.add('active');
+      }
     });
   });
 
@@ -1158,6 +1291,183 @@
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
   }
 
+  /* ── ABOUT CAROUSEL ───────────────────────────────────────────── */
+  (function () {
+    var car = document.querySelector('.about__carousel');
+    if (!car) return;
+    var track  = car.querySelector('.carousel__track');
+    var slides = Array.from(car.querySelectorAll('.carousel__slide'));
+    var dots   = Array.from(car.querySelectorAll('.carousel__dot'));
+    var btnP   = car.querySelector('.carousel__btn--prev');
+    var btnN   = car.querySelector('.carousel__btn--next');
+    var n = slides.length, cur = 0, timer;
+
+    function go(i) {
+      slides[cur].setAttribute('aria-hidden', 'true');
+      cur = ((i % n) + n) % n;
+      track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      dots.forEach(function (d, idx) {
+        d.classList.toggle('active', idx === cur);
+        d.setAttribute('aria-current', idx === cur ? 'true' : 'false');
+      });
+      slides[cur].setAttribute('aria-hidden', 'false');
+    }
+
+    function tick() { timer = setInterval(function () { go(cur + 1); }, 4800); }
+    function stop() { clearInterval(timer); }
+
+    if (btnP) btnP.addEventListener('click', function () { stop(); go(cur - 1); tick(); });
+    if (btnN) btnN.addEventListener('click', function () { stop(); go(cur + 1); tick(); });
+    dots.forEach(function (d, i) { d.addEventListener('click', function () { stop(); go(i); tick(); }); });
+
+    car.addEventListener('mouseenter', stop);
+    car.addEventListener('mouseleave', tick);
+    car.addEventListener('focusin',  stop);
+    car.addEventListener('focusout', tick);
+
+    // Touch swipe
+    var tx = 0;
+    car.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    car.addEventListener('touchend',   function (e) {
+      var dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 44) { stop(); go(dx < 0 ? cur + 1 : cur - 1); tick(); }
+    }, { passive: true });
+
+    // Keyboard navigation when carousel is focused
+    car.setAttribute('tabindex', '0');
+    car.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft')  { stop(); go(cur - 1); tick(); }
+      if (e.key === 'ArrowRight') { stop(); go(cur + 1); tick(); }
+    });
+
+    tick();
+  })();
+
+  /* ── VENUE CAROUSEL ───────────────────────────────────────────── */
+  (function () {
+    var car = document.querySelector('.venue__carousel');
+    if (!car) return;
+    var track  = car.querySelector('.carousel__track');
+    var slides = Array.from(car.querySelectorAll('.carousel__slide'));
+    var dots   = Array.from(car.querySelectorAll('.carousel__dot'));
+    var btnP   = car.querySelector('.carousel__btn--prev');
+    var btnN   = car.querySelector('.carousel__btn--next');
+    var n = slides.length, cur = 0, timer;
+    function go(i) {
+      slides[cur].setAttribute('aria-hidden', 'true');
+      cur = ((i % n) + n) % n;
+      track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      dots.forEach(function (d, idx) {
+        d.classList.toggle('active', idx === cur);
+        d.setAttribute('aria-current', idx === cur ? 'true' : 'false');
+      });
+      slides[cur].setAttribute('aria-hidden', 'false');
+    }
+    function tick() { timer = setInterval(function () { go(cur + 1); }, 5200); }
+    function stop() { clearInterval(timer); }
+    if (btnP) btnP.addEventListener('click', function () { stop(); go(cur - 1); tick(); });
+    if (btnN) btnN.addEventListener('click', function () { stop(); go(cur + 1); tick(); });
+    dots.forEach(function (d, i) { d.addEventListener('click', function () { stop(); go(i); tick(); }); });
+    car.addEventListener('mouseenter', stop);
+    car.addEventListener('mouseleave', tick);
+    var tx = 0;
+    car.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    car.addEventListener('touchend',   function (e) {
+      var dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 44) { stop(); go(dx < 0 ? cur + 1 : cur - 1); tick(); }
+    }, { passive: true });
+    car.setAttribute('tabindex', '0');
+    car.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft')  { stop(); go(cur - 1); tick(); }
+      if (e.key === 'ArrowRight') { stop(); go(cur + 1); tick(); }
+    });
+    tick();
+  })();
+
+  /* ── SCROLL PROGRESS BAR ─────────────────────────────────────── */
+  (function() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+      bar.style.width = Math.min(pct, 100) + '%';
+    }, { passive: true });
+  })();
+
+  /* ── COUNT-UP NUMBERS ─────────────────────────────────────────── */
+  (function() {
+    if (!('IntersectionObserver' in window)) return;
+    function countUp(el, to, prefix, suffix, dur) {
+      const start = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.round(ease * to) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+    }
+    const els = document.querySelectorAll('.about__stat-num, .register__kpi-num');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        const txt = e.target.textContent.trim();
+        const prefix = txt.startsWith('~') ? '~' : '';
+        const suffix = txt.endsWith('+') ? '+' : '';
+        const num = parseInt(txt.replace(/[^0-9]/g, ''), 10);
+        if (!isNaN(num) && num > 1) countUp(e.target, num, prefix, suffix, num > 10 ? 2200 : 1200);
+      });
+    }, { threshold: 0.7 });
+    els.forEach(el => io.observe(el));
+  })();
+
+  /* ── FLOATING NAV SCROLL STATE ───────────────────────────────── */
+  (function() {
+    const navEl = document.getElementById('nav');
+    let lastY = window.scrollY;
+    function onScroll() {
+      const y = window.scrollY;
+      if (y > lastY && y > 50) navEl.classList.add('is-scrolled');    // scrolling down
+      else if (y < lastY)      navEl.classList.remove('is-scrolled'); // scrolling up
+      lastY = y;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  /* ── PILLARS PARALLAX ─────────────────────────────────────────── */
+  (function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const section = document.getElementById('pillars');
+    if (!section) return;
+    const blobs = section.querySelectorAll('.pillars__blob');
+    const scrollSpeeds = [0.42, -0.28, 0.64];
+    const mouseCfg    = [{ x: 42, y: -32 }, { x: -58, y: 46 }, { x: 72, y: -60 }];
+    let mx = 0, my = 0, cx = 0, cy = 0;
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function draw() {
+      cx = lerp(cx, mx, 0.055);
+      cy = lerp(cy, my, 0.055);
+      const rect = section.getBoundingClientRect();
+      const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+      const scrollOffset = window.scrollY - (section.offsetTop - window.innerHeight * 0.5);
+      blobs.forEach((b, i) => {
+        const sy = inView ? scrollOffset * scrollSpeeds[i] : 0;
+        b.style.transform = `translate(${cx * mouseCfg[i].x}px, ${sy + cy * mouseCfg[i].y}px)`;
+      });
+      requestAnimationFrame(draw);
+    }
+    document.addEventListener('mousemove', function(e) {
+      mx = (e.clientX / window.innerWidth)  - 0.5;
+      my = (e.clientY / window.innerHeight) - 0.5;
+    });
+    window.addEventListener('deviceorientation', function(e) {
+      if (e.gamma !== null) mx = Math.max(-0.5, Math.min(0.5, e.gamma / 20));
+      if (e.beta  !== null) my = Math.max(-0.5, Math.min(0.5, (e.beta - 45) / 25));
+    }, { passive: true });
+    requestAnimationFrame(draw);
+  })();
+
   /* ── NAV ACTIVE HIGHLIGHT ─────────────────────────────────────── */
   const navLinks = document.querySelectorAll('.nav__link');
   // observe sections to highlight active nav link
@@ -1172,43 +1482,5 @@
   document.querySelectorAll('section[id]').forEach(s => sio.observe(s));
   </script>
 
-  <!-- Password gate logic -->
-  <script>
-  (function () {
-    var gate  = document.getElementById('pw-gate');
-    var input = document.getElementById('pw-input');
-    var error = document.getElementById('pw-error');
-
-    // Already unlocked this session — remove gate immediately
-    if (sessionStorage.getItem('bes_auth') === '1') {
-      gate.remove();
-      return;
-    }
-
-    // Block background scroll while gate is visible
-    document.body.style.overflow = 'hidden';
-
-    document.getElementById('pw-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (input.value === 'previewbesv') {
-        sessionStorage.setItem('bes_auth', '1');
-        gate.style.opacity = '0';
-        document.body.style.overflow = '';
-        setTimeout(function () { gate.remove(); }, 450);
-      } else {
-        error.style.display = 'block';
-        input.value = '';
-        input.classList.remove('pw-shake');
-        // Force reflow so animation re-triggers on repeated wrong attempts
-        void input.offsetWidth;
-        input.classList.add('pw-shake');
-        input.focus();
-        input.addEventListener('animationend', function () {
-          input.classList.remove('pw-shake');
-        }, { once: true });
-      }
-    });
-  })();
-  </script>
 </body>
 </html>

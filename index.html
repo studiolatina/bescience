@@ -39,9 +39,10 @@
       --shadow-lg:    0 24px 64px rgba(0,167,52,.16);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body { font-family: 'libertad', sans-serif; color: var(--c-text); background: var(--c-white); overflow-x: clip; line-height: 1.65; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; width: 100%; }
+    body { font-family: 'libertad', sans-serif; color: var(--c-text); background: var(--c-white); overflow-x: clip; width: 100%; max-width: 100%; line-height: 1.65; }
     img { display: block; max-width: 100%; height: auto; }
+    iframe { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
     ul, ol { list-style: none; }
     button { cursor: pointer; border: none; background: none; font-family: inherit; }
@@ -151,8 +152,8 @@
     .btn__tag { background: rgba(255,255,255,.18); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 
     /* ── SECTION BASE ───────────────────── */
-    .section { padding: var(--pad-section) var(--pad-x); }
-    .section__inner { max-width: var(--max-w); margin: 0 auto; }
+    .section { padding: var(--pad-section) var(--pad-x); width: 100%; }
+    .section__inner { max-width: var(--max-w); margin: 0 auto; width: 100%; }
     .section--dark { background: var(--c-navy); color: var(--c-white); }
     .section--tinted { background: var(--c-off-white); }
     .section__head { margin-bottom: 40px; }
@@ -421,6 +422,10 @@
       .programme__tabs::-webkit-scrollbar { display: none; }
       /* Programme day header */
       .programme__day-sub { font-size: .75rem; }
+      /* Schedule block — reduce bleed so it never exceeds section padding */
+      .sched-item--block { margin-left: -12px; margin-right: -12px; padding-left: 12px; padding-right: 12px; }
+      /* Map pin — prevent nowrap overflow on narrow screens */
+      .venue__map-pin { max-width: calc(100% - 48px); white-space: normal; text-align: center; justify-content: center; }
     }
     @media (max-width: 540px) {
       :root { --pad-section: 40px; }
@@ -453,6 +458,7 @@
 
     /* ── VENUE MAP ──────────────────────────── */
     .venue__map {
+      width: 100%;
       max-width: var(--max-w);
       margin: 56px auto 0;
       border-radius: var(--radius-lg);
@@ -992,17 +998,17 @@
         <a class="sponsor__item reveal" href="https://www.ieno.no/" target="_blank" rel="noopener noreferrer" aria-label="IENO — Investigadores Españoles en Noruega">
           <img src="logos-sponsors/BESV_sponsor-ieno-300x.png" alt="IENO — Investigadores Españoles en Noruega" loading="lazy">
         </a>
-        <a class="sponsor__item reveal" href="http://gain.xunta.gal/" target="_blank" rel="noopener noreferrer" aria-label="GAIN — Axencia Galega de Innovación">
-          <img src="logos-sponsors/BESV_sponsor-axencia-300px.png" alt="GAIN — Axencia Galega de Innovación" loading="lazy">
-        </a>
         <a class="sponsor__item reveal" href="https://www.aecid.es/" target="_blank" rel="noopener noreferrer" aria-label="Embajada de España en Noruega y AECID">
           <img src="logos-sponsors/BESV_sponsor-embajada-300px.png" alt="Embajada de España en Noruega — AECID" loading="lazy">
+        </a>
+        <a class="sponsor__item reveal" href="https://www.fundacionareces.es/fundacionareces/es/" target="_blank" rel="noopener noreferrer" aria-label="Fundación Ramón Areces">
+          <img src="logos-sponsors/BESV_sponsor-fundacion-ramon-300px.png" alt="Fundación Ramón Areces" loading="lazy">
         </a>
         <a class="sponsor__item reveal" href="https://www.fecyt.es/" target="_blank" rel="noopener noreferrer" aria-label="FECYT — Fundación Española para la Ciencia y la Tecnología">
           <img src="logos-sponsors/BESV_sponsor-fcyt-300px.png" alt="Ministerio de Ciencia, Innovación y Universidades — FECYT" loading="lazy">
         </a>
-        <a class="sponsor__item reveal" href="https://www.fundacionareces.es/fundacionareces/es/" target="_blank" rel="noopener noreferrer" aria-label="Fundación Ramón Areces">
-          <img src="logos-sponsors/BESV_sponsor-fundacion-ramon-300px.png" alt="Fundación Ramón Areces" loading="lazy">
+        <a class="sponsor__item reveal" href="http://gain.xunta.gal/" target="_blank" rel="noopener noreferrer" aria-label="GAIN — Axencia Galega de Innovación">
+          <img src="logos-sponsors/BESV_sponsor-axencia-300px.png" alt="GAIN — Axencia Galega de Innovación" loading="lazy">
         </a>
         <a class="sponsor__item reveal" href="https://raicex.org/" target="_blank" rel="noopener noreferrer" aria-label="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior">
           <img src="logos-sponsors/BESV_sponsor-raicex-300px.png" alt="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior" loading="lazy">

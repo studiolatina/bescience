@@ -418,8 +418,11 @@
       /* Register */
       .register__kpis { gap: 28px 36px; flex-wrap: wrap; }
       /* Sponsors */
-      .sponsor__item { flex: 0 0 140px; }
+      .sponsor__item { flex: 0 0 140px; height: 72px; }
       .sponsors__grid { gap: 24px 20px; }
+      .sponsor__item--fecyt { flex: 0 0 140px; }
+      .sponsor__item--fecyt img { width: 100%; height: 100%; max-width: 100%; object-fit: contain; }
+      .sponsor__item--axencia img { height: 100%; }
       /* Programme tabs — hide scrollbar */
       .programme__tabs { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
       .programme__tabs::-webkit-scrollbar { display: none; }
@@ -455,8 +458,10 @@
       .register__kpis > div { flex: 0 0 calc(50% - 12px); text-align: center; }
       .register__kpi-num { font-size: 1.875rem; }
       /* Sponsors — 2 per row on small phones */
-      .sponsor__item { flex: 0 0 calc(50% - 12px); max-width: 160px; }
+      .sponsor__item { flex: 0 0 calc(50% - 12px); max-width: 160px; height: 64px; }
       .sponsors__grid { gap: 20px 16px; }
+      .sponsor__item--fecyt { flex: 0 0 calc(50% - 12px); max-width: 160px; }
+      .sponsor__item--fecyt img { width: 100%; height: 100%; max-width: 100%; object-fit: contain; }
     }
 
     /* ── VENUE MAP ──────────────────────────── */

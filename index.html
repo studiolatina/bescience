@@ -322,6 +322,9 @@
     .sponsor__item { flex: 0 0 240px; height: 96px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
     .sponsor__item img { width: 100%; height: 100%; object-fit: contain; display: block; opacity: .85; transition: opacity .2s; }
     .sponsor__item:is(a):hover img { opacity: 1; }
+    .sponsors__break { flex-basis: 100%; height: 0; }
+    .sponsors__row { width: 100%; display: flex; flex-wrap: nowrap; justify-content: center; align-items: center; gap: 40px; }
+    .sponsors__row .sponsor__item { flex: 1 1 0; max-width: 210px; min-width: 0; }
     .sponsor__item--fecyt { flex: 0 0 auto; }
     .sponsor__item--fecyt img { width: auto; height: 80px; max-width: none; object-fit: unset; }
 
@@ -1023,33 +1026,42 @@
     <div class="section__inner">
       <p class="sponsors__label" data-i18n="spon.label">Organización y apoyo · Organisation</p>
       <div class="sponsors__grid">
-        <a class="sponsor__item reveal" href="https://www.ieno.no/" target="_blank" rel="noopener noreferrer" aria-label="IENO — Investigadores Españoles en Noruega">
-          <img src="logos-sponsors/BESV_sponsor-ieno-300x.png" alt="IENO — Investigadores Españoles en Noruega" loading="lazy">
-        </a>
+        <!-- Línea 1: asociaciones de la red RAICEX -->
+        <div class="sponsors__row">
+          <a class="sponsor__item reveal" href="https://www.ieno.no/" target="_blank" rel="noopener noreferrer" aria-label="IENO — Investigadores Españoles en Noruega">
+            <img src="logos-sponsors/BESV_sponsor-ieno-300x.png" alt="IENO — Investigadores Españoles en Noruega" loading="lazy">
+          </a>
+          <a class="sponsor__item reveal" href="https://raicex.org/" target="_blank" rel="noopener noreferrer" aria-label="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior">
+            <img src="logos-sponsors/BESV_sponsor-raicex-300px.png" alt="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior" loading="lazy">
+          </a>
+          <a class="sponsor__item reveal" href="https://aces-sffs.com/" target="_blank" rel="noopener noreferrer" aria-label="ACES — Asociación de Científicos Españoles en Suecia">
+            <img src="logos-sponsors/ACES_Logo_Icon+Text 1.png" alt="ACES — Asociación de Científicos Españoles en Suecia" loading="lazy">
+          </a>
+          <a class="sponsor__item reveal" href="https://acefi.es/" target="_blank" rel="noopener noreferrer" aria-label="ACEFI — Asociación de Científicos Españoles en Finlandia">
+            <img src="logos-sponsors/Logo ACEFI 2025c 1.png" alt="ACEFI — Asociación de Científicos Españoles en Finlandia" loading="lazy">
+          </a>
+          <a class="sponsor__item reveal" href="https://cedk.org/" target="_blank" rel="noopener noreferrer" aria-label="CED — Científicos Españoles en Dinamarca">
+            <img src="logos-sponsors/CED 1.png" alt="CED — Científicos Españoles en Dinamarca" loading="lazy">
+          </a>
+        </div>
+        <!-- Separador de línea -->
+        <div class="sponsors__break"></div>
+        <!-- Línea 2: financiadores institucionales -->
         <a class="sponsor__item reveal" href="https://www.aecid.es/" target="_blank" rel="noopener noreferrer" aria-label="Embajada de España en Noruega y AECID">
           <img src="logos-sponsors/BESV_sponsor-embajada-300px.png" alt="Embajada de España en Noruega — AECID" loading="lazy">
-        </a>
-        <a class="sponsor__item reveal" href="https://www.fundacionareces.es/fundacionareces/es/" target="_blank" rel="noopener noreferrer" aria-label="Fundación Ramón Areces">
-          <img src="logos-sponsors/BESV_sponsor-fundacion-ramon-300px.png" alt="Fundación Ramón Areces" loading="lazy">
         </a>
         <a class="sponsor__item sponsor__item--fecyt reveal" href="https://www.fecyt.es/" target="_blank" rel="noopener noreferrer" aria-label="FECYT — Fundación Española para la Ciencia y la Tecnología">
           <img src="logos-sponsors/BESV_sponsor-fcyt-300px.png" alt="Ministerio de Ciencia, Innovación y Universidades — FECYT" loading="lazy">
         </a>
+        <!-- Separador de línea -->
+        <div class="sponsors__break"></div>
+        <!-- Línea 3 -->
+        <a class="sponsor__item reveal" href="https://www.fundacionareces.es/fundacionareces/es/" target="_blank" rel="noopener noreferrer" aria-label="Fundación Ramón Areces">
+          <img src="logos-sponsors/BESV_sponsor-fundacion-ramon-300px.png" alt="Fundación Ramón Areces" loading="lazy">
+        </a>
         <a class="sponsor__item sponsor__item--axencia reveal" href="http://gain.xunta.gal/" target="_blank" rel="noopener noreferrer" aria-label="GAIN — Axencia Galega de Innovación">
           <img src="logos-sponsors/logoXunta2025.png" alt="GAIN — Axencia Galega de Innovación" loading="lazy">
         </a>
-        <a class="sponsor__item reveal" href="https://raicex.org/" target="_blank" rel="noopener noreferrer" aria-label="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior">
-          <img src="logos-sponsors/BESV_sponsor-raicex-300px.png" alt="RAICEX — Red de Asociaciones de Investigadores y Científicos Españoles en el Exterior" loading="lazy">
-        </a>
-        <div class="sponsor__item reveal">
-          <img src="logos-sponsors/ACES_Logo_Icon+Text 1.png" alt="ACES — Asociación de Científicos Españoles en Suecia" loading="lazy">
-        </div>
-        <div class="sponsor__item reveal">
-          <img src="logos-sponsors/Logo ACEFI 2025c 1.png" alt="ACEFI — Asociación de Científicos Españoles en Finlandia" loading="lazy">
-        </div>
-        <div class="sponsor__item reveal">
-          <img src="logos-sponsors/CED 1.png" alt="CED — Científicos Españoles en Dinamarca" loading="lazy">
-        </div>
       </div>
     </div>
   </section>
